@@ -255,32 +255,6 @@ void FUNCTION_Select(FUNCTION_Type_t Function)
         UI_DisplayStatus();
     }
 
-    /*
-    switch (Function) {
-        case FUNCTION_FOREGROUND:
-            FUNCTION_Foreground(PreviousFunction);
-            return;
-
-        case FUNCTION_POWER_SAVE:
-            FUNCTION_PowerSave();
-            return;
-
-        case FUNCTION_TRANSMIT:
-            FUNCTION_Transmit();
-            break;
-
-        case FUNCTION_MONITOR:
-            gMonitor = true;
-            break;
-
-        case FUNCTION_INCOMING:
-        case FUNCTION_RECEIVE:
-        case FUNCTION_BAND_SCOPE:
-        default:
-            break;
-    }
-    */
-
     if (Function == FUNCTION_FOREGROUND) {
         FUNCTION_Foreground(PreviousFunction);
         return;

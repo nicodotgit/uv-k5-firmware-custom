@@ -954,11 +954,7 @@ void MAIN_ProcessKeys(KEY_Code_t Key, bool bKeyPressed, bool bKeyHeld)
         }
     }
 
-    // TODO: ???
-//  if (Key > KEY_PTT)
-//  {
-//      Key = KEY_SIDE2;      // what's this doing ???
-//  }
+
 
     switch (Key) {
 #ifdef ENABLE_FEAT_F4HWN

@@ -71,29 +71,6 @@ bool RADIO_CheckValidChannel(uint16_t channel, bool checkScanList, uint8_t scanL
     if (!checkScanList || scanList > 4)
         return true;
 
-    /*
-    if(scanList == 0 && (att.scanlist1 == 1 || att.scanlist2 == 1 || att.scanlist3 == 1))
-    {
-        return false;
-    }
-    else if(scanList == 1 && att.scanlist1 != 1)
-    {
-        return false;
-    }
-    else if(scanList == 2 && att.scanlist2 != 1)
-    {
-        return false;
-    }
-    else if(scanList == 3 && att.scanlist3 != 1)
-    {
-        return false;
-    }
-    else if(scanList == 4 && (att.scanlist1 == 0 && att.scanlist2 == 0 && att.scanlist3 == 0))
-    {
-        return false;
-    }
-    */
-
     if ((scanList == 0 && (att.scanlist1 == 1 || att.scanlist2 == 1 || att.scanlist3 == 1)) ||
         (scanList == 1 && att.scanlist1 != 1) ||
         (scanList == 2 && att.scanlist2 != 1) ||
@@ -558,49 +535,6 @@ void RADIO_ConfigureSquelchAndOutputPower(VFO_Info_t *pInfo)
     // make low and mid even lower
     // and use calibration values 
     // be aware with toxic fucking closed firmwares
-
-    /*
-    uint8_t shift[] = {0, 0, 0, 0, 0};
-
-    if(Band == 5) // UHF
-    {
-        shift[0] = 0;
-        shift[1] = 0;
-        shift[2] = 0;
-        shift[3] = 0;
-        shift[4] = 0;
-    }
-    */
-
-    /*
-    for(uint8_t p = 0; p < 3; p++)
-    {
-        switch (currentPower)
-        {
-            case 0:
-                Txp[p] = (Txp[p] * 4) / 25; //+ shift[pInfo->OUTPUT_POWER]; 
-                break;
-            case 1:
-                Txp[p] = (Txp[p] * 4) / 19; // + shift[pInfo->OUTPUT_POWER];
-                break;
-            case 2:
-                Txp[p] = (Txp[p] * 4) / 13; // + shift[pInfo->OUTPUT_POWER];
-                break;
-            case 3:
-                Txp[p] = (Txp[p] * 4) / 10; // + shift[pInfo->OUTPUT_POWER];
-                break;
-            case 4:
-                Txp[p] = (Txp[p] * 4) / 7; // + shift[pInfo->OUTPUT_POWER];
-                break;
-            case 5:
-                Txp[p] = (Txp[p] * 3) / 4;
-                break;
-            case 6:
-                Txp[p] = Txp[p] + 30;
-                break;              
-        }
-    }
-    */
 
     static const uint8_t dividers[6] = { 25, 19, 13, 10, 7, 4};
 
