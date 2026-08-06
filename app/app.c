@@ -739,7 +739,8 @@ static void CheckRadioInterrupts(void)
             gAirCopyIsSendMode == 0)
         {
             for (unsigned int i = 0; i < 4; i++) {
-                g_FSK_Buffer[gFSKWriteIndex++] = BK4819_ReadRegister(BK4819_REG_5F);
+                if (gFSKWriteIndex < 36)
+                    g_FSK_Buffer[gFSKWriteIndex++] = BK4819_ReadRegister(BK4819_REG_5F);
             }
 
             AIRCOPY_StorePacket();
