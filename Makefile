@@ -79,7 +79,7 @@ ENABLE_CLANG                    ?= 0
 ENABLE_SWD                      ?= 0
 ENABLE_OVERLAY                  ?= 0
 ENABLE_LTO                      ?= 1
-ENABLE_EXPERIMENTAL_CLFAGS      ?= 1
+ENABLE_EXPERIMENTAL_CFLAGS      ?= 1
 
 #############################################################
 
