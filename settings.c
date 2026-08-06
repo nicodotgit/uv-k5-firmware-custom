@@ -737,18 +737,18 @@ void SETTINGS_SaveSettings(void)
     State[6]  = gSetting_ScrambleEnable;
 #endif
 
-    //if (!gSetting_TX_EN)             State[7] &= ~(1u << 0);
-    if (!gSetting_live_DTMF_decoder) State[7] &= ~(1u << 1);
-    State[7] = (State[7] & ~(3u << 2)) | ((gSetting_battery_text & 3u) << 2);
+    State[7] = 0;
+    if (gSetting_live_DTMF_decoder) State[7] |= (1u << 1);
+    State[7] |= ((gSetting_battery_text & 3u) << 2);
     #ifdef ENABLE_AUDIO_BAR
-        if (!gSetting_mic_bar)           State[7] &= ~(1u << 4);
+        if (gSetting_mic_bar)               State[7] |= (1u << 4);
     #endif
     #ifndef ENABLE_FEAT_F4HWN
         #ifdef ENABLE_AM_FIX
-            if (!gSetting_AM_fix)            State[7] &= ~(1u << 5);
+            if (gSetting_AM_fix)            State[7] |= (1u << 5);
         #endif
     #endif
-    State[7] = (State[7] & ~(3u << 6)) | ((gSetting_backlight_on_tx_rx & 3u) << 6);
+    State[7] |= ((gSetting_backlight_on_tx_rx & 3u) << 6);
 
     EEPROM_WriteBuffer(0x0F40, State);
 
