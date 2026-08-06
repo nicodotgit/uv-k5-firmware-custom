@@ -291,16 +291,14 @@ else
 	CFLAGS += -Oz -Wall -Werror -mcpu=cortex-m0 -fno-builtin -fshort-enums -fno-delete-null-pointer-checks -std=c2x -MMD
 endif
 
-ifeq ($(ENABLE_EXPERIMENTAL_CLFAGS),1)
-	CFLAGS += -funroll-loops -ffat-lto-objects
+ifeq ($(ENABLE_EXPERIMENTAL_CFLAGS),1)
+	CFLAGS += -ffat-lto-objects
 endif
 
 ifeq ($(ENABLE_LTO),1)
 	CFLAGS += -flto=auto
-else
-	# We get most of the space savings if LTO creates problems
-	CFLAGS += -ffunction-sections -fdata-sections
 endif
+CFLAGS += -ffunction-sections -fdata-sections
 
 # May cause unhelpful build failures
 #CFLAGS += -Wpadded
@@ -310,6 +308,7 @@ CFLAGS += -Wextra
 #CFLAGS += -Wpedantic
 
 CFLAGS += -DPRINTF_INCLUDE_CONFIG_H
+CFLAGS += -fmerge-all-constants
 CFLAGS += -DAUTHOR_STRING=\"$(AUTHOR_STRING)\" -DVERSION_STRING=\"$(VERSION_STRING)\"
 
 ifeq ($(ENABLE_SPECTRUM),1)
