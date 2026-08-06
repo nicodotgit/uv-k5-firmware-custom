@@ -164,18 +164,10 @@ void Main(void)
         #ifdef ENABLE_FEAT_F4HWN
             gEeprom.KEY_LOCK = 0;
             SETTINGS_SaveSettings();
-            #ifndef ENABLE_VOX
-                gMenuCursor = 67; // move to hidden section, fix me if change... !!! Remove VOX and Mic Bar
-            #else
-                gMenuCursor = 68; // move to hidden section, fix me if change... !!!
-            #endif
-
-            #ifdef ENABLE_NOAA
-                gMenuCursor += 1; // move to hidden section, fix me if change... !!!
-            #endif
-            #ifdef ENABLE_FEAT_F4HWN_RESCUE_OPS
-                gMenuCursor += 1; // move to hidden section, fix me if change... !!!
-            #endif
+            // dynamically find the hidden menu section index
+            gMenuCursor = 0;
+            while (MenuList[gMenuCursor].name[0] != '\0' && MenuList[gMenuCursor].menu_id != FIRST_HIDDEN_MENU_ITEM)
+                gMenuCursor++;
             gSubMenuSelection = gSetting_F_LOCK;
         #endif
     }
