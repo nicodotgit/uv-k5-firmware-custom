@@ -42,7 +42,6 @@ SECTIONS
 		. = ALIGN(4);
 		sram_data_start = .;
 		*(.sramtext)
-		*(.srambss)
 		*(.data)           /* .data sections              */
 		*(.data*)          /* .data* sections             */
 
@@ -58,6 +57,7 @@ SECTIONS
 	{
 		_sbss = .;         /* Global symbol at bss start */
 		__bss_start__ = _sbss;
+		*(.srambss)
 		*(.bss)
 		*(.bss*)
 		*(COMMON)
@@ -66,6 +66,11 @@ SECTIONS
 		_ebss = .;         /* Global symbol at bss end */
 		__bss_end__ = _ebss;
 	} >RAM
+
+	/DISCARD/ : {
+		*(.ARM.exidx*)
+		*(.ARM.extab*)
+	}
 
 	/* Check that there is enough RAM */
 	._user_heap_stack :
