@@ -111,341 +111,161 @@ void MENU_StopCssScan(void)
     gUpdateStatus = true;
 }
 
-int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
-{
-    *pMin = 0;
+typedef struct {
+    int16_t min;
+    int16_t max;
+} MenuLimits_t;
 
-    switch (menu_id)
-    {
-        case MENU_SQL:
-            //*pMin = 0;
-            *pMax = 9;
-            break;
-
-        case MENU_STEP:
-            //*pMin = 0;
-            *pMax = STEP_N_ELEM - 1;
-            break;
-
-        case MENU_ABR:
-            //*pMin = 0;
-            *pMax = 61;
-            break;
-
-        case MENU_ABR_MIN:
-            //*pMin = 0;
-            *pMax = 9;
-            break;
-
-        case MENU_ABR_MAX:
-            *pMin = 1;
-            *pMax = 10;
-            break;
-
-        case MENU_F_LOCK:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_F_LOCK) - 1;
-            break;
-
-        case MENU_MDF:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_MDF) - 1;
-            break;
-
-        case MENU_TXP:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_TXP) - 1;
-            break;
-
-        case MENU_SFT_D:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_SFT_D) - 1;
-            break;
-
-        case MENU_TDR:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_RXMode) - 1;
-            break;
-
-        #ifdef ENABLE_VOICE
-            case MENU_VOICE:
-                //*pMin = 0;
-                *pMax = ARRAY_SIZE(gSubMenu_VOICE) - 1;
-                break;
-        #endif
-
-        case MENU_SC_REV:
-            //*pMin = 0;
-            *pMax = 104;
-            break;
-
-        case MENU_ROGER:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_ROGER) - 1;
-            break;
-
-        case MENU_PONMSG:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_PONMSG) - 1;
-            break;
-
-        case MENU_R_DCS:
-        case MENU_T_DCS:
-            //*pMin = 0;
-            *pMax = 208;
-            //*pMax = (ARRAY_SIZE(DCS_Options) * 2);
-            break;
-
-        case MENU_R_CTCS:
-        case MENU_T_CTCS:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(CTCSS_Options);
-            break;
-
-        case MENU_W_N:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_W_N) - 1;
-            break;
-
-        #ifdef ENABLE_ALARM
-            case MENU_AL_MOD:
-                //*pMin = 0;
-                *pMax = ARRAY_SIZE(gSubMenu_AL_MOD) - 1;
-                break;
-        #endif
-
-        case MENU_RESET:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_RESET) - 1;
-            break;
-
-        case MENU_COMPAND:
-        case MENU_ABR_ON_TX_RX:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_RX_TX) - 1;
-            break;
-
-        #ifndef ENABLE_FEAT_F4HWN
-            #ifdef ENABLE_AM_FIX
-                case MENU_AM_FIX:
-            #endif
-        #endif
-        #ifdef ENABLE_AUDIO_BAR
-            case MENU_MIC_BAR:
-        #endif
-        case MENU_BCL:
-        case MENU_BEEP:
-        case MENU_S_ADD1:
-        case MENU_S_ADD2:
-        case MENU_S_ADD3:
-        case MENU_STE:
-        case MENU_D_ST:
+static const MenuLimits_t gMenuLimits[] = {
+    [MENU_SQL] = {0, 9},
+    [MENU_STEP] = {0, STEP_N_ELEM - 1},
+    [MENU_ABR] = {0, 61},
+    [MENU_ABR_MIN] = {0, 9},
+    [MENU_ABR_MAX] = {1, 10},
+    [MENU_F_LOCK] = {0, ARRAY_SIZE(gSubMenu_F_LOCK) - 1},
+    [MENU_MDF] = {0, ARRAY_SIZE(gSubMenu_MDF) - 1},
+    [MENU_TXP] = {0, ARRAY_SIZE(gSubMenu_TXP) - 1},
+    [MENU_SFT_D] = {0, ARRAY_SIZE(gSubMenu_SFT_D) - 1},
+    [MENU_TDR] = {0, ARRAY_SIZE(gSubMenu_RXMode) - 1},
+#ifdef ENABLE_VOICE
+    [MENU_VOICE] = {0, ARRAY_SIZE(gSubMenu_VOICE) - 1},
+#endif
+    [MENU_SC_REV] = {0, 104},
+    [MENU_ROGER] = {0, ARRAY_SIZE(gSubMenu_ROGER) - 1},
+    [MENU_PONMSG] = {0, ARRAY_SIZE(gSubMenu_PONMSG) - 1},
+    [MENU_R_DCS] = {0, 208},
+    [MENU_T_DCS] = {0, 208},
+    [MENU_R_CTCS] = {0, ARRAY_SIZE(CTCSS_Options)},
+    [MENU_T_CTCS] = {0, ARRAY_SIZE(CTCSS_Options)},
+    [MENU_W_N] = {0, ARRAY_SIZE(gSubMenu_W_N) - 1},
+#ifdef ENABLE_ALARM
+    [MENU_AL_MOD] = {0, ARRAY_SIZE(gSubMenu_AL_MOD) - 1},
+#endif
+    [MENU_RESET] = {0, ARRAY_SIZE(gSubMenu_RESET) - 1},
+    [MENU_COMPAND] = {0, ARRAY_SIZE(gSubMenu_RX_TX) - 1},
+    [MENU_ABR_ON_TX_RX] = {0, ARRAY_SIZE(gSubMenu_RX_TX) - 1},
+#ifndef ENABLE_FEAT_F4HWN
+#ifdef ENABLE_AM_FIX
+    [MENU_AM_FIX] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
+#endif
+#endif
+#ifdef ENABLE_AUDIO_BAR
+    [MENU_MIC_BAR] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
+#endif
+    [MENU_BCL] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
+    [MENU_BEEP] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
+    [MENU_S_ADD1] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
+    [MENU_S_ADD2] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
+    [MENU_S_ADD3] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
+    [MENU_STE] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
+    [MENU_D_ST] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
 #ifdef ENABLE_DTMF_CALLING
-        case MENU_D_DCD:
+    [MENU_D_DCD] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
 #endif
-        case MENU_D_LIVE_DEC:
-        #ifdef ENABLE_NOAA
-            case MENU_NOAA_S:
-        #endif
-#ifndef ENABLE_FEAT_F4HWN
-        case MENU_350TX:
-        case MENU_200TX:
-        case MENU_500TX:
+    [MENU_D_LIVE_DEC] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
+#ifdef ENABLE_NOAA
+    [MENU_NOAA_S] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
 #endif
-        case MENU_350EN:
 #ifndef ENABLE_FEAT_F4HWN
-        case MENU_SCREN:
+    [MENU_350TX] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
+    [MENU_200TX] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
+    [MENU_500TX] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
+#endif
+    [MENU_350EN] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
+#ifndef ENABLE_FEAT_F4HWN
+    [MENU_SCREN] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
 #endif
 #ifdef ENABLE_FEAT_F4HWN
-        case MENU_SET_TMR:
+    [MENU_SET_TMR] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
 #endif
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_OFF_ON) - 1;
-            break;
-        case MENU_AM:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gModulationStr) - 1;
-            break;
-
+    [MENU_AM] = {0, ARRAY_SIZE(gModulationStr) - 1},
 #ifndef ENABLE_FEAT_F4HWN
-        case MENU_SCR:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_SCRAMBLER) - 1;
-            break;
+    [MENU_SCR] = {0, ARRAY_SIZE(gSubMenu_SCRAMBLER) - 1},
 #endif
-
-        case MENU_AUTOLK:
-            *pMax = 40;
-            break;
-
-        case MENU_TOT:
-            //*pMin = 0;
-            *pMin = 5;
-            *pMax = 179;
-            break;
-
-        #ifdef ENABLE_VOX
-            case MENU_VOX:
-        #endif
-        case MENU_RP_STE:
-            //*pMin = 0;
-            *pMax = 10;
-            break;
-
-        case MENU_MEM_CH:
-        case MENU_1_CALL:
-        case MENU_DEL_CH:
-        case MENU_MEM_NAME:
-            //*pMin = 0;
-            *pMax = MR_CHANNEL_LAST;
-            break;
-
-        case MENU_SLIST1:
-        case MENU_SLIST2:
-        case MENU_SLIST3:
-            *pMin = -1;
-            *pMax = MR_CHANNEL_LAST;
-            break;
-
-        case MENU_SAVE:
-            //*pMin = 0;
-            *pMax = 5;
-            break;
-
-        case MENU_MIC:
-            //*pMin = 0;
-            *pMax = 4;
-            break;
-
-        case MENU_S_LIST:
-            //*pMin = 0;
-            *pMax = 5;
-            break;
-
+    [MENU_AUTOLK] = {0, 40},
+    [MENU_TOT] = {5, 179},
+#ifdef ENABLE_VOX
+    [MENU_VOX] = {0, 10},
+#endif
+    [MENU_RP_STE] = {0, 10},
+    [MENU_MEM_CH] = {0, MR_CHANNEL_LAST},
+    [MENU_1_CALL] = {0, MR_CHANNEL_LAST},
+    [MENU_DEL_CH] = {0, MR_CHANNEL_LAST},
+    [MENU_MEM_NAME] = {0, MR_CHANNEL_LAST},
+    [MENU_SLIST1] = {-1, MR_CHANNEL_LAST},
+    [MENU_SLIST2] = {-1, MR_CHANNEL_LAST},
+    [MENU_SLIST3] = {-1, MR_CHANNEL_LAST},
+    [MENU_SAVE] = {0, 5},
+    [MENU_MIC] = {0, 4},
+    [MENU_S_LIST] = {0, 5},
 #ifdef ENABLE_DTMF_CALLING
-        case MENU_D_RSP:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_D_RSP) - 1;
-            break;
+    [MENU_D_RSP] = {0, ARRAY_SIZE(gSubMenu_D_RSP) - 1},
 #endif
-        case MENU_PTT_ID:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_PTT_ID) - 1;
-            break;
-
-        case MENU_BAT_TXT:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_BAT_TXT) - 1;
-            break;
-
+    [MENU_PTT_ID] = {0, ARRAY_SIZE(gSubMenu_PTT_ID) - 1},
+    [MENU_BAT_TXT] = {0, ARRAY_SIZE(gSubMenu_BAT_TXT) - 1},
 #ifdef ENABLE_DTMF_CALLING
-        case MENU_D_HOLD:
-            *pMin = 5;
-            *pMax = 60;
-            break;
+    [MENU_D_HOLD] = {5, 60},
 #endif
-        case MENU_D_PRE:
-            *pMin = 3;
-            *pMax = 99;
-            break;
-
+    [MENU_D_PRE] = {3, 99},
 #ifdef ENABLE_DTMF_CALLING
-        case MENU_D_LIST:
-            *pMin = 1;
-            *pMax = 16;
-            break;
+    [MENU_D_LIST] = {1, 16},
 #endif
-        #ifdef ENABLE_F_CAL_MENU
-            case MENU_F_CALI:
-                *pMin = -50;
-                *pMax = +50;
-                break;
-        #endif
+#ifdef ENABLE_F_CAL_MENU
+    [MENU_F_CALI] = {-50, 50},
+#endif
+    [MENU_BATCAL] = {1600, 2200},
+    [MENU_BATTYP] = {0, 2},
+#ifdef ENABLE_FEAT_F4HWN_SLEEP
+    [MENU_SET_OFF] = {0, 120},
+#endif
+#ifdef ENABLE_FEAT_F4HWN
+    [MENU_SET_PWR] = {0, ARRAY_SIZE(gSubMenu_SET_PWR) - 1},
+    [MENU_SET_PTT] = {0, ARRAY_SIZE(gSubMenu_SET_PTT) - 1},
+    [MENU_SET_TOT] = {0, ARRAY_SIZE(gSubMenu_SET_TOT) - 1},
+    [MENU_SET_EOT] = {0, ARRAY_SIZE(gSubMenu_SET_TOT) - 1},
+#ifdef ENABLE_FEAT_F4HWN_CTR
+    [MENU_SET_CTR] = {1, 15},
+#endif
+    [MENU_TX_LOCK] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
+#ifdef ENABLE_FEAT_F4HWN_INV
+    [MENU_SET_INV] = {0, ARRAY_SIZE(gSubMenu_OFF_ON) - 1},
+#endif
+    [MENU_SET_LCK] = {0, ARRAY_SIZE(gSubMenu_SET_LCK) - 1},
+    [MENU_SET_MET] = {0, ARRAY_SIZE(gSubMenu_SET_MET) - 1},
+    [MENU_SET_GUI] = {0, ARRAY_SIZE(gSubMenu_SET_MET) - 1},
+#ifdef ENABLE_FEAT_F4HWN_NARROWER
+    [MENU_SET_NFM] = {0, ARRAY_SIZE(gSubMenu_SET_NFM) - 1},
+#endif
+#ifdef ENABLE_FEAT_F4HWN_VOL
+    [MENU_SET_VOL] = {0, 63},
+#endif
+#ifdef ENABLE_FEAT_F4HWN_RESCUE_OPS
+    [MENU_SET_KEY] = {0, 4},
+#endif
+#endif
+};
 
-        case MENU_BATCAL:
-            *pMin = 1600;
-            *pMax = 2200;
-            break;
-
-        case MENU_BATTYP:
-            //*pMin = 0;
-            *pMax = 2;
-            break;
-
+int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
+{
+    switch (menu_id) {
         case MENU_F1SHRT:
         case MENU_F1LONG:
         case MENU_F2SHRT:
         case MENU_F2LONG:
         case MENU_MLONG:
-            //*pMin = 0;
-            *pMax = gSubMenu_SIDEFUNCTIONS_size-1;
-            break;
-
-#ifdef ENABLE_FEAT_F4HWN_SLEEP
-        case MENU_SET_OFF:
-            *pMax = 120;
-            break;
-#endif
-
-#ifdef ENABLE_FEAT_F4HWN
-        case MENU_SET_PWR:
-            *pMax = ARRAY_SIZE(gSubMenu_SET_PWR) - 1;
-            break;
-        case MENU_SET_PTT:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_SET_PTT) - 1;
-            break;
-        case MENU_SET_TOT:
-        case MENU_SET_EOT:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_SET_TOT) - 1;
-            break;
-#ifdef ENABLE_FEAT_F4HWN_CTR
-        case MENU_SET_CTR:
-            *pMin = 1;
-            *pMax = 15;
-            break;
-#endif
-        case MENU_TX_LOCK:
-#ifdef ENABLE_FEAT_F4HWN_INV
-        case MENU_SET_INV:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_OFF_ON) - 1;
-            break;
-#endif
-        case MENU_SET_LCK:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_SET_LCK) - 1;
-            break;
-        case MENU_SET_MET:
-        case MENU_SET_GUI:
-            //*pMin = 0;
-            *pMax = ARRAY_SIZE(gSubMenu_SET_MET) - 1;
-            break;
-        #ifdef ENABLE_FEAT_F4HWN_NARROWER
-            case MENU_SET_NFM:
-                //*pMin = 0;
-                *pMax = ARRAY_SIZE(gSubMenu_SET_NFM) - 1;
-                break;
-        #endif
-        #ifdef ENABLE_FEAT_F4HWN_VOL
-            case MENU_SET_VOL:
-                //*pMin = 0;
-                *pMax = 63;
-                break;
-        #endif
-        #ifdef ENABLE_FEAT_F4HWN_RESCUE_OPS
-            case MENU_SET_KEY:
-                //*pMin = 0;
-                *pMax = 4;
-                break;
-        #endif
-#endif
-
-        default:
-            return -1;
+            *pMin = 0;
+            *pMax = gSubMenu_SIDEFUNCTIONS_size - 1;
+            return 0;
     }
 
+    if (menu_id >= ARRAY_SIZE(gMenuLimits))
+        return -1;
+
+    if (gMenuLimits[menu_id].max == 0 && gMenuLimits[menu_id].min == 0)
+        return -1;
+
+    *pMin = gMenuLimits[menu_id].min;
+    *pMax = gMenuLimits[menu_id].max;
     return 0;
 }
 
