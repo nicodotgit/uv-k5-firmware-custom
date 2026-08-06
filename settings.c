@@ -460,7 +460,8 @@ void SETTINGS_FetchChannelName(char *s, const int channel)
         if (s[i] < 32 || s[i] > 127)
             break;                // invalid char
 
-    s[i--] = 0;                   // null term
+    s[i] = 0;                     // null term
+    i--;
 
     while (i >= 0 && s[i] == 32)  // trim trailing spaces
         s[i--] = 0;               // null term
