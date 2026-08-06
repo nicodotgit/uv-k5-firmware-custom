@@ -151,7 +151,7 @@ const uint8_t ST7565_CMD_SEG_DIRECTION = 0xA0;
 // 1 0 1 0 0 1 1 INV
 // INV =1, inverse display
 // INV =0, normal display
-const uint8_t ST7565_CMD_INVERSE_DISPLAY = 0xA6;
+const uint8_t ST7565_CMD_INVERSE_DISPLAY = 0xA7;
 // All Pixel ON
 // 1 0 1 0 0 1 0 AP
 // AP=1, set all pixel ON
