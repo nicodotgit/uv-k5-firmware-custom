@@ -248,7 +248,7 @@ void AM_fix_reset(const unsigned vfo)
 
     prev_rssi[vfo] = 0;
     hold_counter[vfo] = 0;
-    gain_table_index_prev[vfo] = 0;
+    gain_table_index_prev[vfo] = 0xFFFF;
 }
 
 // adjust the RX gain to try and prevent the AM demodulator from
@@ -289,7 +289,7 @@ void AM_fix_10ms(const unsigned vfo)
     {   // sample the current RSSI level
         // average it with the previous rssi (a bit of noise/spike immunity)
         const int16_t new_rssi = BK4819_GetRSSI();
-        rssi                   = (prev_rssi[vfo] > 0) ? (prev_rssi[vfo] + new_rssi) / 2 : new_rssi;
+        rssi                   = (prev_rssi[vfo] > 0) ? (prev_rssi[vfo] + new_rssi) >> 1 : new_rssi;
         prev_rssi[vfo]         = new_rssi;
     }
 
@@ -358,13 +358,15 @@ void AM_fix_10ms(const unsigned vfo)
     {   // apply the new settings to the front end registers
         const unsigned int index = gain_table_index[vfo];
 
-        // remember the new table index
-        gain_table_index_prev[vfo] = index;
-        currentGainDiff = gain_table[0].gain_dB - gain_table[index].gain_dB;
-        BK4819_WriteRegister(BK4819_REG_13, gain_table[index].reg_val);
+        if (index != gain_table_index_prev[vfo]) {
+            // remember the new table index
+            gain_table_index_prev[vfo] = index;
+            currentGainDiff = gain_table[0].gain_dB - gain_table[index].gain_dB;
+            BK4819_WriteRegister(BK4819_REG_13, gain_table[index].reg_val);
 #ifdef ENABLE_AGC_SHOW_DATA
-        UI_MAIN_PrintAGC(true);
+            UI_MAIN_PrintAGC(true);
 #endif
+        }
     }
 
 #ifdef ENABLE_AM_FIX_SHOW_DATA
