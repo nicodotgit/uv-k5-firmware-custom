@@ -182,7 +182,7 @@ uint8_t cmds[] = {
     ST7565_CMD_BIAS_SELECT | 0,             // Select bias setting: 1/9
     ST7565_CMD_COM_DIRECTION  | (0 << 3),   // Set output direction of COM: normal
     ST7565_CMD_SEG_DIRECTION | 1,           // Set scan direction of SEG: reverse
-    ST7565_CMD_INVERSE_DISPLAY | 0,         // Inverse Display: false
+    ST7565_CMD_INVERSE_DISPLAY ^ 0,         // Inverse Display: true (quirk default)
     ST7565_CMD_ALL_PIXEL_ON | 0,            // All Pixel ON: false - normal display
     ST7565_CMD_REGULATION_RATIO | (4 << 0), // Regulation Ratio 5.0
 
@@ -199,7 +199,7 @@ uint8_t cmds[] = {
     {
         switch(i) {
             case 3:
-                ST7565_WriteByte(ST7565_CMD_INVERSE_DISPLAY | gSetting_set_inv);
+                ST7565_WriteByte(ST7565_CMD_INVERSE_DISPLAY ^ gSetting_set_inv);
                 break;
             case 7:
                 ST7565_WriteByte(21 + gSetting_set_ctr);
