@@ -22,24 +22,25 @@
 
 uint8_t ADC_GetChannelNumber(ADC_CH_MASK Mask)
 {
-    if (Mask & ADC_CH15) return 15U;
-    if (Mask & ADC_CH14) return 14U;
-    if (Mask & ADC_CH13) return 13U;
-    if (Mask & ADC_CH12) return 12U;
-    if (Mask & ADC_CH11) return 11U;
-    if (Mask & ADC_CH10) return 10U;
-    if (Mask & ADC_CH9) return 9U;
-    if (Mask & ADC_CH8) return 8U;
-    if (Mask & ADC_CH7) return 7U;
-    if (Mask & ADC_CH6) return 6U;
-    if (Mask & ADC_CH5) return 5U;
-    if (Mask & ADC_CH4) return 4U;
-    if (Mask & ADC_CH3) return 3U;
-    if (Mask & ADC_CH2) return 2U;
-    if (Mask & ADC_CH1) return 1U;
-    if (Mask & ADC_CH0) return 0U;
-
-    return 0U;
+    switch (Mask) {
+        case ADC_CH15: return 15U;
+        case ADC_CH14: return 14U;
+        case ADC_CH13: return 13U;
+        case ADC_CH12: return 12U;
+        case ADC_CH11: return 11U;
+        case ADC_CH10: return 10U;
+        case ADC_CH9:  return 9U;
+        case ADC_CH8:  return 8U;
+        case ADC_CH7:  return 7U;
+        case ADC_CH6:  return 6U;
+        case ADC_CH5:  return 5U;
+        case ADC_CH4:  return 4U;
+        case ADC_CH3:  return 3U;
+        case ADC_CH2:  return 2U;
+        case ADC_CH1:  return 1U;
+        case ADC_CH0:  return 0U;
+        default:       return 0U;
+    }
 }
 
 void ADC_Disable(void)
@@ -158,7 +159,7 @@ uint16_t ADC_GetValue(ADC_CH_MASK Mask)
     volatile ADC_Channel_t *pChannels = (volatile ADC_Channel_t *)&SARADC_CH0;
     uint8_t Channel = ADC_GetChannelNumber(Mask);
 
-    SARADC_IF = 1 << Channel; // TODO: Or just use 'Mask'
+    SARADC_IF = Mask;
 
     return (pChannels[Channel].DATA & ADC_CHx_DATA_DATA_MASK) >> ADC_CHx_DATA_DATA_SHIFT;
 }
