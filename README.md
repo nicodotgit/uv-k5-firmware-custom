@@ -1,36 +1,23 @@
-# Stats
-
-![Alt](https://repobeats.axiom.co/api/embed/947813147857755cef60a960d13734044b3b2c22.svg "Repobeats analytics image")
-
 # Open re-implementation of the Quansheng UV-K5/K6/5R v2.1.27 firmware
 
-This repository is a fork of [Egzumer custom firmware](https://github.com/egzumer/uv-k5-firmware-custom), who was a merge of [OneOfEleven custom firmware](https://github.com/OneOfEleven/uv-k5-firmware-custom) with [fagci spectrum analizer](https://github.com/fagci/uv-k5-firmware-fagci-mod/tree/refactor) plus my few changes.
+This repository is a fork of the [Original F4HWN firmware](https://github.com/armel/uv-k5-firmware-custom), which itself builds upon the [Egzumer custom firmware](https://github.com/egzumer/uv-k5-firmware-custom) (a merge of [OneOfEleven's custom firmware](https://github.com/OneOfEleven/uv-k5-firmware-custom) and [fagci's spectrum analyzer](https://github.com/fagci/uv-k5-firmware-fagci-mod)), plus a few of my own changes and bugfixes.
 
 All is a cloned and customized version of DualTachyon's open firmware found [here](https://github.com/DualTachyon/uv-k5-firmware) ... a cool achievement !
 
 > [!NOTE]
-> EN - About Chirp, as many others firmwares, you need to use a dedicated driver available on [this repository](https://github.com/armel/uv-k5-chirp-driver). 
->
-> _FR - A propos de Chirp, comme beaucoup d'autres firmwares, vous devez utiliser un pilote dédié disponible sur [ce dépôt](https://github.com/armel/uv-k5-chirp-driver)._
+> About Chirp, as many others firmwares, you need to use a dedicated driver available on [this repository](https://github.com/armel/uv-k5-chirp-driver).
 
 > [!WARNING]
-> EN - THIS FIRMWARE HAS NO REAL BRAIN. PLEASE USE YOUR OWN. Use this firmware at your own risk (entirely). There is absolutely no guarantee that it will work in any way shape or form on your radio(s), it may even brick your radio(s), in which case, you'd need to buy another radio.
+> THIS FIRMWARE HAS NO REAL BRAIN. PLEASE USE YOUR OWN. Use this firmware at your own risk (entirely). There is absolutely no guarantee that it will work in any way shape or form on your radio(s), it may even brick your radio(s), in which case, you'd need to buy another radio.
 Anyway, have fun.
->
-> _FR - CE FIRMWARE N'A PAS DE VÉRITABLE CERVEAU. VEUILLEZ UTILISER LE VÔTRE. Utilisez ce firmware à vos risques et périls. Il n'y a absolument aucune garantie qu'il fonctionnera d'une manière ou d'une autre sur votre (vos) radio(s), il peut même bousiller votre (vos) radio(s), dans ce cas, vous devrez acheter une autre radio. Quoi qu'il en soit, amusez-vous bien._
 
 > [!CAUTION]
-> EN - I recommend to backup your eeprom with [k5prog](https://github.com/sq5bpf/k5prog) before playing with alternative firmwares. It's a good reflex to have. 
->
-> _FR - Je recommande de sauvegarder votre eeprom avec [k5prog](https://github.com/sq5bpf/k5prog) avant de jouer avec des firmwares alternatifs. C'est un bon réflexe à avoir._
-
-# Donations
-
-Special thanks to Jean-Cyrille F6IWW (2 times), Fabrice 14RC123, David F4BPP, Olivier 14RC206, Frédéric F4ESO, Stéphane F5LGW, Jorge Ornelas (4 times), Laurent F4AXK, Christophe Morel, Clayton W0LED, Pierre Antoine F6FWB, Jean-Claude 14FRS3306, Thierry F4GVO, Eric F1NOU, PricelessToolkit, Ady M6NYJ, Tom McGovern (4 times), Joseph Roth, Pierre-Yves Colin, Frank DJ7FG, Marcel Testaz, Brian Frobisher, Yannick F4JFO, Paolo Bussola, Dirk DL8DF, Levente Szőke (2 times), Bernard-Michel Herrera, Jérôme Saintespes, Paul Davies, RS (3 times), Johan F4WAT, Robert Wörle, Rafael Sundorf, Paul Harker, Peter Fintl, Pascal F4ICR (2 times), Mike DL2MF, Eric KI1C (2 times), Phil G0ELM, Jérôme Lambert, Meinhard Frank Günther, Eliot Vedel, Alfonso EA7KDF, Jean-François F1EVM, Robert DC1RDB, Ian KE2CHJ, Daryl VK3AWA, Roberto Brunelli, Robert Boardman, Stephen Oliver, Nicolas F4INE and William Bruno for their [donations](https://www.paypal.com/paypalme/F4HWN). That’s so kind of them. Thanks so much 🙏🏻
+> I recommend to backup your eeprom with [k5prog](https://github.com/sq5bpf/k5prog) before playing with alternative firmwares. It's a good reflex to have.
 
 ## Table of Contents
 
-* [My Features](#main-features)
+* [nicodotgit Changes](#custom-changes-by-nicodotgit-this-fork)
+* [F4HWN Features](#main-features-and-improvements-from-f4hwn)
 * [Main Features from Egzumer](#main-features-from-egzumer)
 * [Manual](#manual)
 * [Radio Performance](#radio-performance)
@@ -38,8 +25,17 @@ Special thanks to Jean-Cyrille F6IWW (2 times), Fabrice 14RC123, David F4BPP, Ol
 * [Building](#building)
 * [Credits](#credits)
 * [Other sources of information](#other-sources-of-information)
+* [Original F4HWN Donators](#donators-from-original-f4hwn)
 * [License](#license)
-* [Example changes/updates](#example-changesupdates)
+
+## Custom changes by nicodotgit (This Fork)
+
+* **Repository Cleanup:** Removed unneeded precompiled archives and images.
+* **Build System:** Removed unused GitHub actions workflows, optimized compiler flags, and improved the linker script.
+* **Memory Optimizations:** Converted variables to `#define` macros and replaced `MENU_GetLimits` with a static look-up table.
+* **Firmware Fixes:** Added bounds checking on the FSK buffer, corrected 108MHz bounds check, tweaked ST7565 inverse display command, and optimized the AM demodulator fix logic.
+* **Code Quality:** Removed extensive dead code and commented-out code blocks for a cleaner codebase.
+* **Custom Nicodotgit Build:** Added a new build target (`nicodotgit`) that compiles a highly customized firmware with Spectrum Analyzer, FM Radio, custom menu layout, and AM fix enabled, but heavily strips out Vox, Aircopy, NOAA, Rescue Ops, Games, PMR/GMRS, Alarms, and DTMF Calling for a purely streamlined experience.
 
 ## Main features and improvements from F4HWN:
 
@@ -189,7 +185,7 @@ Special thanks to Jean-Cyrille F6IWW (2 times), Fabrice 14RC123, David F4BPP, Ol
 
  ## Manual
 
-Up to date manual is available in the [Wiki section](https://github.com/armel/uv-k5-firmware-custom/wiki)
+Up to date manual is available in the [Wiki](https://github.com/armel/uv-k5-firmware-custom/wiki).
 
 ## Radio performance
 
@@ -208,6 +204,7 @@ On the other hand, FM RX audio will/should be fine.
 But, they are nice toys for the price, fun to play with.
 
 ## Compiler
+`Note: This is the recommendation from the F4HWN devs. I personally used the rolling release versions from the Arch Linux repositories and had no problems.`
 
 arm-none-eabi GCC version 10.3.1 is recommended, which is the current version on Ubuntu 22.04.03 LTS.
 Other versions may generate a flash file that is too big.
@@ -218,64 +215,45 @@ You can get it from: https://releases.llvm.org/download.html
 
 ## Building
 
-### Github Codespace build method
+### Environment Setup
 
-This is the least demanding option as you don't have to install enything on your computer. All you need is Github account.
+To compile the firmware natively, you need the `arm-none-eabi-gcc` toolchain and `make` installed on your system, along with Python for the CRC checksum generation script.
 
-1. Go to https://github.com/armel/uv-k5-firmware-custom
-1. Click green `Code` button
-1. Change tab from `Local` to `Codespace`
-1. Click green `Create codespace on main` button
-
-<img src="images/Code_Space_1.png" width=700 />
-
-5. Open `Makefile`, edit build options and save changes
-1. If necessary, open `compile-with-docker.sh`, edit build versions and save changes
-1. Run in terminal window
-    - `./compile-with-docker.sh bandscope` to compile bandscope version
-    - `./compile-with-docker.sh broadcast` to compile broadcast version
-    - `./compile-with-docker.sh voxless` to compile voxless version
-    - `./compile-with-docker.sh all` to compile all versions 
-    - `./compile-with-docker.sh custom` to compile only with Makefile build options   
-1. Open folder `compiled-firmware`
-1. Right click `firmware.packed.bin`
-1. Click `Download`, now you should have a firmware on your computer that you can proceed to flash on your radio. You can use [online flasher](https://egzumer.github.io/uvtools)
-
-<img src="images/Code_Space_2.png" width=700 />
-
-### Docker build method
-
-If you have docker installed you can use [compile-with-docker.bat](./compile-with-docker.bat) (Windows) or [compile-with-docker.sh](./compile-with-docker.sh) (Linux/Mac), the output files are created in `compiled-firmware` folder. This method gives significantly smaller binaries, I've seen differences up to 1kb, so it can fit more functionalities this way. The challenge can be (or not) installing docker itself. 
-
-> [!TIP]
-> On Linux/Mac, you may need to uncomment and customize the DOCKER_NETWORK environment variable at the beginning of the [compile-with-docker.sh](./compile-with-docker.sh) script. Note: this can introduce security risks by removing network isolation. However, if you encounter issues and are using a specific network environment (with a proxy or a firewall), this may help.
-
-### Windows environment build method
-
-1. Open windows command line and run:
+**Linux / macOS (Debian/Ubuntu example)**
+1. Install the toolchain and dependencies:
+    ```bash
+    sudo apt update
+    sudo apt install gcc-arm-none-eabi build-essential python3 python3-pip
+    pip3 install --user --upgrade pip
+    pip3 install crcmod
     ```
-    winget install -e -h git.git Python.Python.3.8 GnuWin32.Make
-    winget install -e -h Arm.GnuArmEmbeddedToolchain -v "10 2021.10"
-    ```
-2. Close command line, open a new one and run:
-    ```
-    pip install --user --upgrade pip
-    pip install crcmod
-    mkdir c:\projects & cd /D c:/projects
-    git clone https://github.com/armel/uv-k5-firmware-custom.git
-    ```
-3. From now on you can build the firmware by going to `c:\projects\uv-k5-firmware-custom` and running `win_make.bat` or by running a command line:
-    ```
-    cd /D c:\projects\uv-k5-firmware-custom
-    win_make.bat
-    ```
-4. To reset the repository and pull new changes run (!!! it will delete all your changes !!!):
-    ```
-    cd /D c:\projects\uv-k5-firmware-custom
-    git reset --hard & git clean -fd & git pull
+2. Clone the repository:
+    ```bash
+    git clone https://github.com/nicodotgit/uv-k5-firmware-custom.git
+    cd uv-k5-firmware-custom
     ```
 
-I've left some notes in the win_make.bat file to maybe help with stuff.
+### Compiling
+
+You can build the firmware using the provided `compile.sh` wrapper script which simplifies compiling different firmware variants. The output files will be created in the `compiled-firmware` folder.
+
+1. Ensure the script is executable:
+    ```bash
+    chmod +x compile.sh
+    ```
+2. Run the build script with your desired variant:
+    ```bash
+    ./compile.sh nicodotgit    # Compiles the custom Nicodotgit build
+    ./compile.sh bandscope  # Compiles the Bandscope version
+    ./compile.sh broadcast  # Compiles the Broadcast version
+    ./compile.sh basic      # Compiles the Basic version
+    ./compile.sh rescueops  # Compiles the RescueOps version
+    ./compile.sh game       # Compiles the Game version
+    ./compile.sh all        # Compiles all the above variants
+    ```
+
+Once compiled, you'll find the `.packed.bin` file in the `compiled-firmware` directory. You can proceed to flash this file onto your radio using the [online flasher](https://egzumer.github.io/uvtools).
+
 
 ## Credits
 
@@ -301,6 +279,10 @@ Many thanks to various people:
 [ludwich66 - Quansheng UV-K5 Wiki](https://github.com/ludwich66/Quansheng_UV-K5_Wiki/wiki)<br>
 [amnemonic - tools and sources of information](https://github.com/amnemonic/Quansheng_UV-K5_Firmware)
 
+## Donators (From Original F4HWN)
+
+Special thanks to Jean-Cyrille F6IWW (2 times), Fabrice 14RC123, David F4BPP, Olivier 14RC206, Frédéric F4ESO, Stéphane F5LGW, Jorge Ornelas (4 times), Laurent F4AXK, Christophe Morel, Clayton W0LED, Pierre Antoine F6FWB, Jean-Claude 14FRS3306, Thierry F4GVO, Eric F1NOU, PricelessToolkit, Ady M6NYJ, Tom McGovern (4 times), Joseph Roth, Pierre-Yves Colin, Frank DJ7FG, Marcel Testaz, Brian Frobisher, Yannick F4JFO, Paolo Bussola, Dirk DL8DF, Levente Szőke (2 times), Bernard-Michel Herrera, Jérôme Saintespes, Paul Davies, RS (3 times), Johan F4WAT, Robert Wörle, Rafael Sundorf, Paul Harker, Peter Fintl, Pascal F4ICR (2 times), Mike DL2MF, Eric KI1C (2 times), Phil G0ELM, Jérôme Lambert, Meinhard Frank Günther, Eliot Vedel, Alfonso EA7KDF, Jean-François F1EVM, Robert DC1RDB, Ian KE2CHJ, Daryl VK3AWA, Roberto Brunelli, Robert Boardman, Stephen Oliver, Nicolas F4INE and William Bruno for their [donations](https://www.paypal.com/paypalme/F4HWN). That’s so kind of them. Thanks so much 🙏🏻
+
 ## License
 
 Copyright 2023 Dual Tachyon
@@ -317,26 +299,3 @@ You may obtain a copy of the License at
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-## Example changes/updates
-
-Here are a few photos.
-
-|![Main Only and Dual RX Respond](https://github.com/armel/uv-k5-firmware-custom-feat-F4HWN/blob/main/photos/IMG_3291.png)|
-|:--:|
-| Main Only and Dual RX Respond |
-
-
-|![Main Only and Dual RX Respond (invert mode)](https://github.com/armel/uv-k5-firmware-custom-feat-F4HWN/blob/main/photos/IMG_3290.png)|
-|:--:|
-| Main Only and Dual RX Respond (invert mode) |
-
-
-|![Some new menu entries](https://github.com/armel/uv-k5-firmware-custom-feat-F4HWN/blob/main/photos/IMG_3292.png)|
-|:--:|
-| Some new menu entries |
-
-
-|![Main Only and Spectrum Analyzer](https://github.com/armel/uv-k5-firmware-custom-feat-F4HWN/blob/main/photos/IMG_3293.png)|
-|:--:|
-| Main Only and Spectrum Analyzer |
