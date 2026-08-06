@@ -101,7 +101,7 @@ uint8_t DCS_GetCtcssCode(int Code)
     {
         int Delta = Code - CTCSS_Options[i];
         if (Delta < 0)
-            Delta = -(Code - CTCSS_Options[i]);
+            Delta = -Delta;
         if (Smallest > Delta)
         {
             Smallest = Delta;
