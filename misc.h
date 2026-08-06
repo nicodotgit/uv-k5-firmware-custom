@@ -79,61 +79,70 @@ enum BacklightOnRxTx_t {
     BACKLIGHT_ON_TR_TXRX
 };
 
-extern const uint8_t         fm_radio_countdown_500ms;
-extern const uint16_t        fm_play_countdown_scan_10ms;
-extern const uint16_t        fm_play_countdown_noscan_10ms;
-extern const uint16_t        fm_restore_countdown_10ms;
+#define fm_radio_countdown_500ms          (2000 / 500)   // 2 seconds
+#define fm_play_countdown_scan_10ms       (100 / 10)     // 100ms
+#define fm_play_countdown_noscan_10ms     (1200 / 10)    // 1.2 seconds
+#define fm_restore_countdown_10ms         (5000 / 10)    // 5 seconds
 
-extern const uint8_t        vfo_state_resume_countdown_500ms;
+#define vfo_state_resume_countdown_500ms  (2500 / 500)   // 2.5 seconds
 
-extern const uint8_t         menu_timeout_500ms;
-extern const uint16_t        menu_timeout_long_500ms;
+#define menu_timeout_500ms                (20000 / 500)  // 20 seconds
+#define menu_timeout_long_500ms           (120000 / 500) // 2 minutes
 
-extern const uint8_t         DTMF_RX_live_timeout_500ms;
+#define DTMF_RX_live_timeout_500ms        (6000 / 500)   // 6 seconds live decoder on screen
 #ifdef ENABLE_DTMF_CALLING
-extern const uint8_t         DTMF_RX_timeout_500ms;
-extern const uint8_t         DTMF_decode_ring_countdown_500ms;
-extern const uint8_t         DTMF_txstop_countdown_500ms;
+#define DTMF_RX_timeout_500ms             (10000 / 500)  // 10 seconds
+#define DTMF_decode_ring_countdown_500ms  (15000 / 500)  // 15 seconds
+#define DTMF_txstop_countdown_500ms       (3000 / 500)   // 6 seconds
 #endif
 
-extern const uint8_t         key_input_timeout_500ms;
+#define key_input_timeout_500ms           (8000 / 500)   // 8 seconds
 
-extern const uint16_t        key_repeat_delay_10ms;
-extern const uint16_t        key_repeat_10ms;
-extern const uint16_t        key_debounce_10ms;
+#define key_repeat_delay_10ms             (400 / 10)     // 400ms
+#define key_repeat_10ms                   (80 / 10)      // 80ms
+#define key_debounce_10ms                 (20 / 10)      // 20ms
 
-extern const uint8_t         scan_delay_10ms;
+#define scan_delay_10ms                   (210 / 10)     // 210ms
 
-extern const uint16_t        battery_save_count_10ms;
-
-extern const uint16_t        power_save1_10ms;
-extern const uint16_t        power_save2_10ms;
+#ifdef ENABLE_FEAT_F4HWN
+    #define dual_watch_count_after_tx_10ms    420           // 4.2 sec after TX ends
+    #define dual_watch_count_after_rx_10ms    (1000 / 10)  // 1 sec after RX ends
+    #define dual_watch_count_after_1_10ms     (5000 / 10)  // 5 sec
+    #define dual_watch_count_after_2_10ms     420           // 4.2 sec
+    #define dual_watch_count_noaa_10ms        (70 / 10)    // 70ms
+#else
+    #define dual_watch_count_after_tx_10ms    (3600 / 10)  // 3.6 sec after TX ends
+    #define dual_watch_count_after_rx_10ms    (1000 / 10)  // 1 sec after RX ends
+    #define dual_watch_count_after_1_10ms     (5000 / 10)  // 5 sec
+    #define dual_watch_count_after_2_10ms     (3600 / 10)  // 3.6 sec
+    #define dual_watch_count_noaa_10ms        (70 / 10)    // 70ms
+#endif
 
 #ifdef ENABLE_VOX
-    extern const uint16_t    vox_stop_count_down_10ms;
+    #define dual_watch_count_after_vox_10ms   (200 / 10)   // 200ms
 #endif
+#define dual_watch_count_toggle_10ms      (100 / 10)     // 100ms between VFO toggles
 
-extern const uint16_t        NOAA_countdown_10ms;
-extern const uint16_t        NOAA_countdown_2_10ms;
-extern const uint16_t        NOAA_countdown_3_10ms;
+#define scan_pause_delay_in_1_10ms        (5000 / 10)    // 5 seconds
+#define scan_pause_delay_in_2_10ms        (500 / 10)     // 500ms
+#define scan_pause_delay_in_3_10ms        (200 / 10)     // 200ms
+#define scan_pause_delay_in_4_10ms        (300 / 10)     // 300ms
+#define scan_pause_delay_in_5_10ms        (1000 / 10)    // 1 sec
+#define scan_pause_delay_in_6_10ms        (100 / 10)     // 100ms
+#define scan_pause_delay_in_7_10ms        (3600 / 10)    // 3.6 seconds
 
-extern const uint16_t        dual_watch_count_after_tx_10ms;
-extern const uint16_t        dual_watch_count_after_rx_10ms;
-extern const uint16_t        dual_watch_count_after_1_10ms;
-extern const uint16_t        dual_watch_count_after_2_10ms;
-extern const uint16_t        dual_watch_count_toggle_10ms;
-extern const uint16_t        dual_watch_count_noaa_10ms;
+#define battery_save_count_10ms           (10000 / 10)   // 10 seconds
+
+#define power_save1_10ms                  (100 / 10)     // 100ms
+#define power_save2_10ms                  (200 / 10)     // 200ms
+
 #ifdef ENABLE_VOX
-    extern const uint16_t    dual_watch_count_after_vox_10ms;
+    #define vox_stop_count_down_10ms          (1000 / 10)  // 1 second
 #endif
 
-extern const uint16_t        scan_pause_delay_in_1_10ms;
-extern const uint16_t        scan_pause_delay_in_2_10ms;
-extern const uint16_t        scan_pause_delay_in_3_10ms;
-extern const uint16_t        scan_pause_delay_in_4_10ms;
-extern const uint16_t        scan_pause_delay_in_5_10ms;
-extern const uint16_t        scan_pause_delay_in_6_10ms;
-extern const uint16_t        scan_pause_delay_in_7_10ms;
+#define NOAA_countdown_10ms               (5000 / 10)    // 5 seconds
+#define NOAA_countdown_2_10ms             (500 / 10)     // 500ms
+#define NOAA_countdown_3_10ms             (200 / 10)     // 200ms
 
 //extern const uint16_t        gMax_bat_v;
 //extern const uint16_t        gMin_bat_v;
@@ -229,8 +238,8 @@ typedef union {
     uint8_t __val;
 } ChannelAttributes_t;
 
-extern ChannelAttributes_t   gMR_ChannelAttributes[207];
-extern bool                  gMR_ChannelExclude[207];
+extern ChannelAttributes_t   gMR_ChannelAttributes[FREQ_CHANNEL_LAST + 1];
+extern bool                  gMR_ChannelExclude[FREQ_CHANNEL_LAST + 1];
 
 extern volatile uint16_t     gBatterySaveCountdown_10ms;
 
