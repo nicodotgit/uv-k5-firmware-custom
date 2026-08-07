@@ -16,6 +16,7 @@ Anyway, have fun.
 
 ## Table of Contents
 
+* [Firmware Variants](#firmware-variants)
 * [nicodotgit Changes](#custom-changes-by-nicodotgit-this-fork)
 * [F4HWN Features](#main-features-and-improvements-from-f4hwn)
 * [Main Features from Egzumer](#main-features-from-egzumer)
@@ -28,6 +29,19 @@ Anyway, have fun.
 * [Original F4HWN Donators](#donators-from-original-f4hwn)
 * [License](#license)
 
+## Firmware Variants
+
+Several firmware versions are available, each tailored to a specific use case because of the strict 60KB hardware memory limit:
+
+| Edition | Build Size & Space | Key Features |
+|---------|--------------------|--------------|
+| 🧰 **[nicodotgit (Custom)](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.nicodotgit.packed.bin)** | **Size:** 61,436 bytes<br>**Free:** 4 bytes | ✅ FM Broadcast<br>✅ Bandscope<br>🚫 VOX / Air Copy / K5 Viewer<br>✅ All other features enabled |
+| 📺 **[Bandscope edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.bandscope.packed.bin)** | **Size:** 61,380 bytes<br>**Free:** 60 bytes | ✅ Bandscope<br>🚫 FM Broadcast<br>🚫 VOX<br>✅ Air Copy<br>✅ K5 Viewer<br>✅ All other features enabled |
+| 📻 **[Broadcast edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.broadcast.packed.bin)** | **Size:** 59,940 bytes<br>**Free:** 1,500 bytes | ✅ FM Broadcast<br>🚫 Bandscope<br>✅ VOX<br>✅ Air Copy<br>✅ K5 Viewer<br>✅ All other features enabled |
+| 🚨 **[RescueOps edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.rescueops.packed.bin)** | **Size:** 57,572 bytes<br>**Free:** 3,868 bytes | ✅ First responder oriented<br>🚫 FM Broadcast<br>🚫 Bandscope<br>✅ VOX<br>✅ Air Copy<br>✅ K5 Viewer<br>✅ NOAA weather<br>✅ All other features enabled |
+| ☘️ **[Basic edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.basic.packed.bin)** | **Size:** 61,324 bytes<br>**Free:** 116 bytes | ✅ FM Broadcast<br>✅ Bandscope *(simplified)*<br>🚫 VOX<br>🚫 Air Copy<br>🚫 K5 Viewer<br><br>*Some features had to be disabled because of limited available memory...*<br><br>🚫 Audio Bar<br>🚫 CTR/Contrast Menu<br>🚫 Resume State<br>🚫 Charging C |
+| 🎮 **[Game edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.game.packed.bin)** | **Size:** 60,788 bytes<br>**Free:** 652 bytes | ✅ Built-in Breakout-style game<br>✅ FM Broadcast<br>🚫 Bandscope<br>🚫 VOX<br>✅ Air Copy<br>🚫 K5 Viewer<br>✅ All other features enabled |
+
 ## Custom changes by nicodotgit (This Fork)
 
 * **Repository Cleanup:** Removed unneeded precompiled archives and images.
@@ -35,16 +49,10 @@ Anyway, have fun.
 * **Memory Optimizations:** Converted variables to `#define` macros and replaced `MENU_GetLimits` with a static look-up table.
 * **Firmware Fixes:** Added bounds checking on the FSK buffer, corrected 108MHz bounds check, tweaked ST7565 inverse display command, and optimized the AM demodulator fix logic.
 * **Code Quality:** Removed extensive dead code and commented-out code blocks for a cleaner codebase.
-* **Custom Nicodotgit Build:** Added a new build target (`nicodotgit`) that compiles a highly customized firmware with Spectrum Analyzer, FM Radio, custom menu layout, and AM fix enabled, but heavily strips out Vox, Aircopy, NOAA, Rescue Ops, Games, PMR/GMRS, Alarms, and DTMF Calling for a purely streamlined experience.
+* **Custom Build:** Added a new build target (`nicodotgit`) that compiles a highly customized firmware with Spectrum Analyzer, FM Radio, custom menu layout, and AM fix enabled, but strips out Vox, Aircopy, NOAA, Rescue Ops, Games, PMR/GMRS, Alarms, and DTMF Calling for a purely streamlined experience.
 
 ## Main features and improvements from F4HWN:
 
-* several firmware versions:
-    * Bandscope (with spectrum analyzer made by Fagci),
-    * Broadcast (with commercial FM radio support),
-    * Basic (with spectrum analyzer and commercial FM radios support, but without certain functions such as Vox, Aircopy, etc.),
-    * RescueOps (specifically designed for first responders: firefighters, sea rescue, mountain rescue),
-    * Game (with a small breakout game),
 * improve default power settings level: 
     * Low1 to Low5 (<~20mW, ~125mW, ~250mW, ~500mW, ~1W), 
     * Mid ~2W, 
