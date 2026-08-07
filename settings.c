@@ -972,6 +972,9 @@ State[1] = 0
 #ifdef ENABLE_FEAT_F4HWN_RESCUE_OPS
     | (1 << 6)
 #endif
+#ifdef ENABLE_FEAT_F4HWN_CTR
+    | (1 << 7)
+#endif
 ;
     EEPROM_WriteBuffer(0x1FF0, State);
 }
