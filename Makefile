@@ -584,7 +584,7 @@ bsp/dp32g030/%.h: hardware/dp32g030/%.def
 -include $(DEPS)
 
 clean:
-	$(RM) $(call FixPath, $(TARGET).bin $(TARGET).packed.bin $(TARGET) $(OBJS) $(DEPS))
+	$(RM) $(call FixPath, $(TARGET).bin $(TARGET).packed.bin $(TARGET) *.o *.d external/printf/*.o external/printf/*.d driver/*.o driver/*.d app/*.o app/*.d helper/*.o helper/*.d ui/*.o ui/*.d)
 
 doxygen:
 	doxygen
