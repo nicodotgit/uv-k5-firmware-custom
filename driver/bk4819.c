@@ -35,8 +35,8 @@
 
 static const uint16_t FSK_RogerTable[7] = {0xF1A2, 0x7446, 0x61A4, 0x6544, 0x4E8A, 0xE044, 0xEA84};
 
-static const uint8_t DTMF_TONE1_GAIN = 65;
-static const uint8_t DTMF_TONE2_GAIN = 93;
+#define DTMF_TONE1_GAIN 65
+#define DTMF_TONE2_GAIN 93
 
 static uint16_t gBK4819_GpioOutState;
 
