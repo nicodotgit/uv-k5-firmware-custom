@@ -5,7 +5,7 @@ This repository is a fork of the [Original F4HWN firmware](https://github.com/ar
 All is a cloned and customized version of DualTachyon's open firmware found [here](https://github.com/DualTachyon/uv-k5-firmware) ... a cool achievement !
 
 > [!NOTE]
-> About Chirp, as many others firmwares, you need to use a dedicated driver available on [this repository](https://github.com/armel/uv-k5-chirp-driver).
+> About Chirp, as many others firmwares, you need to use a dedicated driver available in [this repository](https://github.com/nicodotgit/uv-k5-firmware-custom/blob/main/uvk5_egz_f4hwn_ndg_ver_4_4_0.py).
 
 > [!WARNING]
 > THIS FIRMWARE HAS NO REAL BRAIN. PLEASE USE YOUR OWN. Use this firmware at your own risk (entirely). There is absolutely no guarantee that it will work in any way shape or form on your radio(s), it may even brick your radio(s), in which case, you'd need to buy another radio.
