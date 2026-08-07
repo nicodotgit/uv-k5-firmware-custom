@@ -156,8 +156,8 @@ nicodotgit() {
         ENABLE_FEAT_F4HWN_SLEEP=0 \
         ENABLE_SHOW_CHARGE_LEVEL=0 \
         ENABLE_DTMF_CALLING=0 \
-        ENABLE_FEAT_F4HWN_INV=0 \
-        ENABLE_KEEP_MEM_NAME=0 \
+        ENABLE_FEAT_F4HWN_INV=1 \
+        ENABLE_KEEP_MEM_NAME=1 \
         ENABLE_CUSTOM_MENU_LAYOUT=1 \
         ENABLE_SMALL_BOLD=1 \
         ENABLE_COPY_CHAN_TO_VFO=1 \
@@ -166,7 +166,7 @@ nicodotgit() {
         ENABLE_BIG_FREQ=1 \
         ENABLE_RSSI_BAR=1 \
         ENABLE_FEAT_F4HWN_CTR=1 \
-        ENABLE_FLASHLIGHT=0 \
+        ENABLE_FLASHLIGHT=1 \
         ENABLE_AM_FIX=1 \
         ENABLE_EXPERIMENTAL_CFLAGS=0 \
         EDITION_STRING=nicodotgit \
