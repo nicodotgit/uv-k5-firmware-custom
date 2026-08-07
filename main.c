@@ -138,16 +138,6 @@ void Main(void)
         gEeprom.MENU_LOCK = !gEeprom.MENU_LOCK;
         SETTINGS_SaveSettings();
     }
-
-    /*
-    if(gEeprom.MENU_LOCK == true) // Force Main Only
-    {
-        gEeprom.DUAL_WATCH = 0;
-        gEeprom.CROSS_BAND_RX_TX = 0;
-        //gFlagReconfigureVfos = true;
-        //gUpdateStatus        = true;
-    }
-    */
 #endif
 
 #ifdef ENABLE_FEAT_F4HWN_RESCUE_OPS
@@ -160,14 +150,11 @@ void Main(void)
     if (BootMode == BOOT_MODE_F_LOCK)
     {
 
-        gF_LOCK = true;            // flag to say include the hidden menu items
+        gF_LOCK = true;
         #ifdef ENABLE_FEAT_F4HWN
             gEeprom.KEY_LOCK = 0;
             SETTINGS_SaveSettings();
-            // dynamically find the hidden menu section index
-            gMenuCursor = 0;
-            while (MenuList[gMenuCursor].name[0] != '\0' && MenuList[gMenuCursor].menu_id != FIRST_HIDDEN_MENU_ITEM)
-                gMenuCursor++;
+            gMenuCursor = UI_MENU_GetMenuIdx(FIRST_HIDDEN_MENU_ITEM);
             gSubMenuSelection = gSetting_F_LOCK;
         #endif
     }
