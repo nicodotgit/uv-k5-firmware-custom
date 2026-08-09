@@ -110,7 +110,7 @@ OBJS += init.o
 ifeq ($(ENABLE_OVERLAY),1)
 	OBJS += sram-overlay.o
 endif
-OBJS += external/printf/printf.o
+# OBJS += external/printf/printf.o
 
 # Drivers
 OBJS += driver/adc.o
@@ -186,6 +186,7 @@ OBJS += frequencies.o
 OBJS += functions.o
 OBJS += helper/battery.o
 OBJS += helper/boot.o
+OBJS += helper/string.o
 OBJS += misc.o
 OBJS += radio.o
 OBJS += scheduler.o
