@@ -68,13 +68,20 @@ bool FM_CheckValidChannel(uint8_t Channel)
 
 uint8_t FM_FindNextChannel(uint8_t Channel, uint8_t Direction)
 {
+    uint16_t lowerLimit = BK1080_GetFreqLoLimit(gEeprom.FM_Band);
+    uint16_t upperLimit = BK1080_GetFreqHiLimit(gEeprom.FM_Band);
+
     for (unsigned i = 0; i < ARRAY_SIZE(gFM_Channels); i++) {
         if (Channel == 0xFF)
             Channel = ARRAY_SIZE(gFM_Channels) - 1;
         else if (Channel >= ARRAY_SIZE(gFM_Channels))
             Channel = 0;
-        if (FM_CheckValidChannel(Channel))
+
+        if (Channel < ARRAY_SIZE(gFM_Channels) &&
+            gFM_Channels[Channel] >= lowerLimit &&
+            gFM_Channels[Channel] < upperLimit)
             return Channel;
+
         Channel += Direction;
     }
 
