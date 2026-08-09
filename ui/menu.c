@@ -135,7 +135,7 @@ const t_menu_item MenuList[] =
     {"VOX",         MENU_VOX           },
 #endif
 #ifdef ENABLE_FEAT_F4HWN
-    {"SysIn",       MENU_VOL           }, // was "VOL"
+    {"About",       MENU_VOL           }, // was "VOL"
 #else
     {"BatVo",       MENU_VOL           }, // was "VOL"
 #endif
@@ -503,7 +503,7 @@ int     edit_index;
 
 void UI_DisplayMenu(void)
 {
-    const unsigned int menu_list_width = 5; // max no. of characters on the menu list (left side)
+    const unsigned int menu_list_width = 6; // max no. of characters on the menu list (left side)
     const unsigned int menu_item_x1    = (8 * menu_list_width) + 2;
     const unsigned int menu_item_x2    = LCD_WIDTH - 1;
     unsigned int       i;

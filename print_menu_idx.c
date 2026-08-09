@@ -179,7 +179,7 @@ const t_menu_item MenuList[] =
 #endif
     {"VOX",         MENU_VOX           },
 #ifdef ENABLE_FEAT_F4HWN
-    {"SysInf",      MENU_VOL           }, // was "VOL"
+    {"About",       MENU_VOL           }, // was "VOL"
 #else
     {"BatVol",      MENU_VOL           }, // was "VOL"
 #endif
