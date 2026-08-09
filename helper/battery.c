@@ -46,7 +46,7 @@ typedef enum {
 } BatteryLow_t;
 
 uint16_t          lowBatteryCountdown;
-const uint16_t    lowBatteryPeriod = 30;
+enum { lowBatteryPeriod = 30 };
 
 volatile uint16_t gPowerSave_10ms;
 

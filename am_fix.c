@@ -145,7 +145,7 @@ static const t_gain_table gain_table[] =
     {0x03FF,0}      // 42 .. 3 7 3 7 ..   0dB   0dB  0dB   0dB ..   0dB
 };
 
-const uint8_t gain_table_size = ARRAY_SIZE(gain_table);
+enum { gain_table_size = ARRAY_SIZE(gain_table) };
 #else
 
 t_gain_table gain_table[100] = {{0x03BE, -7}}; //original
@@ -222,7 +222,7 @@ int16_t prev_rssi[2] = {0, 0};
 // to help reduce gain hunting, peak hold count down tick
 unsigned int hold_counter[2] = {0, 0};
 // -89dBm, any higher and the AM demodulator starts to saturate/clip/distort
-const int16_t desired_rssi = (-89 + 160) * 2;
+enum { desired_rssi = (-89 + 160) * 2 };
 
 int8_t currentGainDiff;
 bool enabled = true;

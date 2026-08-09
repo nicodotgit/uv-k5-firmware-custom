@@ -45,7 +45,7 @@ struct FrequencyBandInfo
 #define F_MIN frequencyBandTable[0].lower
 #define F_MAX frequencyBandTable[BAND_N_ELEM - 1].upper
 
-const uint16_t RSSI_MAX_VALUE = 65535;
+enum { RSSI_MAX_VALUE = 65535 };
 
 static uint32_t initialFreq;
 static char String[32];
