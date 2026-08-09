@@ -18,7 +18,7 @@
 
 #include "driver/eeprom.h"
 #include "driver/st7565.h"
-#include "external/printf/printf.h"
+#include "helper/string.h"
 #include "helper/battery.h"
 #include "settings.h"
 #include "misc.h"

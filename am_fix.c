@@ -25,7 +25,7 @@
 #include "app/main.h"
 #include "board.h"
 #include "driver/bk4819.h"
-#include "external/printf/printf.h"
+#include "helper/string.h"
 #include "frequencies.h"
 #include "functions.h"
 #include "misc.h"
@@ -381,7 +381,16 @@ void AM_fix_10ms(const unsigned vfo)
 void AM_fix_print_data(const unsigned vfo, char *s) {
     if (s != NULL && vfo < ARRAY_SIZE(gain_table_index)) {
         const unsigned int index = gain_table_index[vfo];
-        sprintf(s, "%2u %4ddB %3u", index, gain_table[index].gain_dB, prev_rssi[vfo]);
+        char temp[8];
+        strcpy(s, "");
+        itoa_pad(temp, index, 2);
+        strcat(s, temp);
+        strcat(s, " ");
+        itoa_int(temp, gain_table[index].gain_dB, 4);
+        strcat(s, temp);
+        strcat(s, "dB ");
+        itoa_pad(temp, prev_rssi[vfo], 3);
+        strcat(s, temp);
         counter = 0;
     }
 }

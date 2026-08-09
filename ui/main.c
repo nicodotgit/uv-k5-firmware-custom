@@ -26,7 +26,7 @@
 #include "board.h"
 #include "driver/bk4819.h"
 #include "driver/st7565.h"
-#include "external/printf/printf.h"
+#include "helper/string.h"
 #include "functions.h"
 #include "helper/battery.h"
 #include "misc.h"

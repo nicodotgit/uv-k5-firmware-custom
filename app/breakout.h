@@ -24,7 +24,7 @@
 #include "../driver/st7565.h"
 #include "../driver/system.h"
 #include "../driver/systick.h"
-#include "../external/printf/printf.h"
+#include "helper/string.h"
 #include "../font.h"
 #include "../helper/battery.h"
 #include "../misc.h"

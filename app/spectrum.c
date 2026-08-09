@@ -14,6 +14,7 @@
  *     limitations under the License.
  */
 #include "app/spectrum.h"
+#include "helper/string.h"
 #include "am_fix.h"
 #include "audio.h"
 #include "misc.h"
@@ -999,10 +1000,27 @@ uint8_t Rssi2Y(uint16_t rssi)
 static void DrawStatus()
 {
 #ifdef SPECTRUM_EXTRA_VALUES
-    sprintf(String, "%d/%d P:%d T:%d", settings.dbMin, settings.dbMax,
-            Rssi2DBm(peak.rssi), Rssi2DBm(settings.rssiTriggerLevel));
+    char temp[8];
+    strcpy(String, "");
+    itoa_int(temp, settings.dbMin, 1);
+    strcat(String, temp);
+    strcat(String, "/");
+    itoa_int(temp, settings.dbMax, 1);
+    strcat(String, temp);
+    strcat(String, " P:");
+    itoa_int(temp, Rssi2DBm(peak.rssi), 1);
+    strcat(String, temp);
+    strcat(String, " T:");
+    itoa_int(temp, Rssi2DBm(settings.rssiTriggerLevel), 1);
+    strcat(String, temp);
 #else
-    sprintf(String, "%d/%d", settings.dbMin, settings.dbMax);
+    char temp[8];
+    strcpy(String, "");
+    itoa_int(temp, settings.dbMin, 1);
+    strcat(String, temp);
+    strcat(String, "/");
+    itoa_int(temp, settings.dbMax, 1);
+    strcat(String, temp);
 #endif
     GUI_DisplaySmallest(String, 0, 1, true, true);
 
@@ -1014,9 +1032,6 @@ static void DrawStatus()
                        4 * 760 / gBatteryCalibration[3];
 
     unsigned perc = BATTERY_VoltsToPercent(voltage);
-
-    // sprintf(String, "%d %d", voltage, perc);
-    // GUI_DisplaySmallest(String, 48, 1, true, true);
 
     gStatusLine[116] = 0b00011100;
     gStatusLine[117] = 0b00111110;
@@ -1072,7 +1087,13 @@ static void ShowChannelName(uint32_t f)
 
 static void DrawF(uint32_t f)
 {
-    sprintf(String, "%u.%05u", f / 100000, f % 100000);
+    char temp[8];
+    strcpy(String, "");
+    itoa_pad(temp, f / 100000, 1);
+    strcat(String, temp);
+    strcat(String, ".");
+    itoa_pad(temp, f % 100000, 5);
+    strcat(String, temp);
     UI_PrintStringSmallNormal(String, 8, 127, 0);
 
     sprintf(String, "%3s", gModulationStr[settings.modulationType]);
@@ -1093,35 +1114,75 @@ static void DrawNums()
 #ifdef ENABLE_SCAN_RANGES
         if (gScanRangeStart)
         {
-            sprintf(String, "%ux", GetStepsCountDisplay());
+            char temp[8];
+            itoa_pad(temp, GetStepsCountDisplay(), 1);
+            strcpy(String, temp);
+            strcat(String, "x");
         }
         else
 #endif
         {
-            sprintf(String, "%ux", GetStepsCount());
+            char temp[8];
+            itoa_pad(temp, GetStepsCount(), 1);
+            strcpy(String, temp);
+            strcat(String, "x");
         }
         GUI_DisplaySmallest(String, 0, 1, false, true);
-        sprintf(String, "%u.%02uk", GetScanStep() / 100, GetScanStep() % 100);
+        char temp[8];
+        strcpy(String, "");
+        itoa_pad(temp, GetScanStep() / 100, 1);
+        strcat(String, temp);
+        strcat(String, ".");
+        itoa_pad(temp, GetScanStep() % 100, 2);
+        strcat(String, temp);
+        strcat(String, "k");
         GUI_DisplaySmallest(String, 0, 7, false, true);
     }
 
     if (IsCenterMode())
     {
-        sprintf(String, "%u.%05u \x7F%u.%02uk", currentFreq / 100000,
-                currentFreq % 100000, settings.frequencyChangeStep / 100,
-                settings.frequencyChangeStep % 100);
+        char temp[8];
+        strcpy(String, "");
+        itoa_pad(temp, currentFreq / 100000, 1);
+        strcat(String, temp);
+        strcat(String, ".");
+        itoa_pad(temp, currentFreq % 100000, 5);
+        strcat(String, temp);
+        strcat(String, " \x7F");
+        itoa_pad(temp, settings.frequencyChangeStep / 100, 1);
+        strcat(String, temp);
+        strcat(String, ".");
+        itoa_pad(temp, settings.frequencyChangeStep % 100, 2);
+        strcat(String, temp);
+        strcat(String, "k");
         GUI_DisplaySmallest(String, 36, 49, false, true);
     }
     else
     {
-        sprintf(String, "%u.%05u", GetFStart() / 100000, GetFStart() % 100000);
+        char temp[8];
+        strcpy(String, "");
+        itoa_pad(temp, GetFStart() / 100000, 1);
+        strcat(String, temp);
+        strcat(String, ".");
+        itoa_pad(temp, GetFStart() % 100000, 5);
+        strcat(String, temp);
         GUI_DisplaySmallest(String, 0, 49, false, true);
 
-        sprintf(String, "\x7F%u.%02uk", settings.frequencyChangeStep / 100,
-                settings.frequencyChangeStep % 100);
+        strcpy(String, "\x7F");
+        itoa_pad(temp, settings.frequencyChangeStep / 100, 1);
+        strcat(String, temp);
+        strcat(String, ".");
+        itoa_pad(temp, settings.frequencyChangeStep % 100, 2);
+        strcat(String, temp);
+        strcat(String, "k");
         GUI_DisplaySmallest(String, 48, 49, false, true);
 
-        sprintf(String, "%u.%05u", GetFEnd() / 100000, GetFEnd() % 100000);
+        strcpy(String, "");
+        itoa_pad(temp, GetFEnd() / 100000, 1);
+        strcat(String, temp);
+        strcat(String, ".");
+        itoa_pad(temp, GetFEnd() % 100000, 5);
+        strcat(String, temp);
         GUI_DisplaySmallest(String, 93, 49, false, true);
     }
 }
@@ -1445,9 +1506,16 @@ static void RenderStill()
 
     int dbm = Rssi2DBm(scanInfo.rssi);
     uint8_t s = DBm2S(dbm);
-    sprintf(String, "S: %u", s);
+    char temp[8];
+    strcpy(String, "S: ");
+    itoa_pad(temp, s, 1);
+    strcat(String, temp);
     GUI_DisplaySmallest(String, 4, 25, false, true);
-    sprintf(String, "%d dBm", dbm);
+    
+    strcpy(String, "");
+    itoa_int(temp, dbm, 1);
+    strcat(String, temp);
+    strcat(String, " dBm");
     GUI_DisplaySmallest(String, 28, 25, false, true);
 
     if (!monitorMode)
@@ -1477,29 +1545,38 @@ static void RenderStill()
                 gFrameBuffer[row + 1][j + offset] = 0xFF;
             }
         }
-        sprintf(String, "%s", registerSpecs[idx].name);
+        strcpy(String, registerSpecs[idx].name);
         GUI_DisplaySmallest(String, offset + 2, row * 8 + 2, false,
                             menuState != idx);
 
 #ifdef ENABLE_FEAT_F4HWN_SPECTRUM
+        char temp[8];
+        strcpy(String, "");
         if(idx == 1)
         {
-            sprintf(String, "%ddB", LNAsOptions[GetRegMenuValue(idx)]);
+            itoa_int(temp, LNAsOptions[GetRegMenuValue(idx)], 1);
+            strcat(String, temp);
+            strcat(String, "dB");
         }
         else if(idx == 2)
         {
-            sprintf(String, "%ddB", LNAOptions[GetRegMenuValue(idx)]);
+            itoa_int(temp, LNAOptions[GetRegMenuValue(idx)], 1);
+            strcat(String, temp);
+            strcat(String, "dB");
         }
         else if(idx == 3)
         {
-            sprintf(String, "%ddB", VGAOptions[GetRegMenuValue(idx)]);
+            itoa_int(temp, VGAOptions[GetRegMenuValue(idx)], 1);
+            strcat(String, temp);
+            strcat(String, "dB");
         }
         else if(idx == 4)
         {
-            sprintf(String, "%skHz", BPFOptions[(GetRegMenuValue(idx) / 0x2aaa)]);
+            strcpy(String, BPFOptions[(GetRegMenuValue(idx) / 0x2aaa)]);
+            strcat(String, "kHz");
         }
 #else
-        sprintf(String, "%u", GetRegMenuValue(idx));
+        itoa_pad(String, GetRegMenuValue(idx), 1);
 #endif
         GUI_DisplaySmallest(String, offset + 2, (row + 1) * 8 + 1, false,
                             menuState != idx);

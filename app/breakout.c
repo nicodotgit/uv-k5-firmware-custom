@@ -15,6 +15,7 @@
  */
 
 #include "app/breakout.h"
+#include "helper/string.h"
 
 #ifdef ENABLE_FEAT_F4HWN_SCREENSHOT
 #include "screenshot.h"
@@ -193,16 +194,23 @@ void drawScore()
     // Clean status line
     memset(gStatusLine,  0, sizeof(gStatusLine));
 
+    char temp[8];
     // Level
-    sprintf(str, "Level %02u", levelCountBreackout);
+    strcpy(str, "Level ");
+    itoa_pad(temp, levelCountBreackout, 2);
+    strcat(str, temp);
     GUI_DisplaySmallest(str, 0, 1, true, true);
 
     // Ball
-    sprintf(str, "Ball %02u", (ballCount < 0) ? 0 : ballCount);
+    strcpy(str, "Ball ");
+    itoa_pad(temp, (ballCount < 0) ? 0 : ballCount, 2);
+    strcat(str, temp);
     GUI_DisplaySmallest(str, 45, 1, true, true);
 
     // Score
-    sprintf(str, "Score %04u", score);
+    strcpy(str, "Score ");
+    itoa_pad(temp, score, 4);
+    strcat(str, temp);
     GUI_DisplaySmallest(str, 88, 1, true, true);
 }
 
