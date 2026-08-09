@@ -56,16 +56,28 @@ void UI_DisplayAircopy(void)
 
     if (gInputBoxIndex == 0) {
         uint32_t frequency = gRxVfo->freq_config_RX.Frequency;
+#ifdef ENABLE_BIG_FREQ
         sprintf(String, "%3u.%05u", frequency / 100000, frequency % 100000);
+#else
+        sprintf(String, "%u.%05u", frequency / 100000, frequency % 100000);
+#endif
+#ifdef ENABLE_BIG_FREQ
         // show the remaining 2 small frequency digits
         UI_PrintStringSmallNormal(String + 7, 97, 0, 3);
         String[7] = 0;
         // show the main large frequency digits
         UI_DisplayFrequency(String, 16, 2, false);
+#else
+        UI_PrintString(String, 0, 127, 2, 8);
+#endif
     } else {
         const char *ascii = INPUTBOX_GetAscii();
         sprintf(String, "%.3s.%.3s", ascii, ascii + 3);
+#ifdef ENABLE_BIG_FREQ
         UI_DisplayFrequency(String, 16, 2, false);
+#else
+        UI_PrintString(String, 0, 127, 2, 8);
+#endif
     }
 
     memset(String, 0, sizeof(String));

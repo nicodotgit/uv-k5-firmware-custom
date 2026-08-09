@@ -83,13 +83,21 @@ void UI_DisplayFM(void)
         sprintf(String, "CH-%02u", gEeprom.FM_SelectedChannel + 1);
     } else {
         if (gInputBoxIndex == 0) {
+#ifdef ENABLE_BIG_FREQ
             sprintf(String, "%3d.%d", gEeprom.FM_FrequencyPlaying / 10, gEeprom.FM_FrequencyPlaying % 10);
+#else
+            sprintf(String, "%d.%d", gEeprom.FM_FrequencyPlaying / 10, gEeprom.FM_FrequencyPlaying % 10);
+#endif
         } else {
             const char * ascii = INPUTBOX_GetAscii();
             sprintf(String, "%.3s.%.1s",ascii, ascii + 3);
         }
 
+#ifdef ENABLE_BIG_FREQ
         UI_DisplayFrequency(String, 36, 1, gInputBoxIndex == 0);  // frequency
+#else
+        UI_PrintString(String, 0, 127, 1, 8);
+#endif
         ST7565_BlitFullScreen();
         return;
     }
