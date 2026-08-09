@@ -89,7 +89,9 @@ const t_menu_item MenuList[] =
     {"BatSav",      MENU_SAVE          }, // was "SAVE"
     {"BatTxt",      MENU_BAT_TXT       },
     {"Mic",         MENU_MIC           },
+#ifdef ENABLE_AUDIO_BAR
     {"MicBar",      MENU_MIC_BAR       },
+#endif
     {"ChDisp",      MENU_MDF           }, // was "MDF"
     {"POnMsg",      MENU_PONMSG        },
     {"BLTime",      MENU_ABR           }, // was "ABR"
@@ -129,7 +131,9 @@ const t_menu_item MenuList[] =
         {"AM Fix",      MENU_AM_FIX        },
     #endif
 #endif
+#ifdef ENABLE_VOX
     {"VOX",         MENU_VOX           },
+#endif
 #ifdef ENABLE_FEAT_F4HWN
     {"SysInf",      MENU_VOL           }, // was "VOL"
 #else
@@ -142,8 +146,12 @@ const t_menu_item MenuList[] =
     {"SetPTT",      MENU_SET_PTT       },
     {"SetTOT",      MENU_SET_TOT       },
     {"SetEOT",      MENU_SET_EOT       },
+#ifdef ENABLE_FEAT_F4HWN_CTR
     {"SetCtr",      MENU_SET_CTR       },
+#endif
+#ifdef ENABLE_FEAT_F4HWN_INV
     {"SetInv",      MENU_SET_INV       },
+#endif
     {"SetLck",      MENU_SET_LCK       },
     {"SetMet",      MENU_SET_MET       },
     {"SetGUI",      MENU_SET_GUI       },
@@ -626,6 +634,7 @@ void UI_DisplayMenu(void)
             }
             break;
 
+#ifdef ENABLE_AUDIO_BAR
         case MENU_MIC_BAR:
             #ifdef ENABLE_AUDIO_BAR
                 strcpy(String, gSubMenu_OFF_ON[gSubMenuSelection]);
@@ -633,6 +642,7 @@ void UI_DisplayMenu(void)
                 strcpy(String, gSubMenu_NA);
             #endif
             break;
+#endif
 
         case MENU_STEP: {
             uint16_t step = gStepFrequencyTable[FREQUENCY_GetStepIdxFromSortedIdx(gSubMenuSelection)];
@@ -709,6 +719,7 @@ void UI_DisplayMenu(void)
             break;
 #endif
 
+#ifdef ENABLE_VOX
         case MENU_VOX:
             #ifdef ENABLE_VOX
                 sprintf(String, gSubMenuSelection == 0 ? gSubMenu_OFF_ON[0] : "%u", gSubMenuSelection);
@@ -716,6 +727,7 @@ void UI_DisplayMenu(void)
                 strcpy(String, gSubMenu_NA);
             #endif
             break;
+#endif
 
         case MENU_ABR:
             if(gSubMenuSelection == 0)
@@ -1095,6 +1107,7 @@ void UI_DisplayMenu(void)
             strcpy(String, gSubMenu_SET_TOT[gSubMenuSelection]); // Same as SET_TOT
             break;
 
+#ifdef ENABLE_FEAT_F4HWN_CTR
         case MENU_SET_CTR:
             #ifdef ENABLE_FEAT_F4HWN_CTR
                 sprintf(String, "%d", gSubMenuSelection);
@@ -1104,7 +1117,9 @@ void UI_DisplayMenu(void)
                 strcpy(String, gSubMenu_NA);
             #endif
             break;
+#endif
 
+#ifdef ENABLE_FEAT_F4HWN_INV
         case MENU_SET_INV:
             #ifdef ENABLE_FEAT_F4HWN_INV
                 strcpy(String, gSubMenu_OFF_ON[gSubMenuSelection]);
@@ -1113,6 +1128,7 @@ void UI_DisplayMenu(void)
                 strcpy(String, gSubMenu_NA);
             #endif
             break;
+#endif
 
         case MENU_TX_LOCK:
             if(TX_freq_check(gEeprom.VfoInfo[gEeprom.TX_VFO].pTX->Frequency) == 0)

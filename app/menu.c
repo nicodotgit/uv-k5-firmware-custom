@@ -247,8 +247,10 @@ int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
             *pMin = 1; *pMax = 16; return 0;
 #endif
 #ifdef ENABLE_FEAT_F4HWN
+#ifdef ENABLE_FEAT_F4HWN_CTR
         case MENU_SET_CTR:
             *pMin = 1; *pMax = 15; return 0;
+#endif
 #endif
         case MENU_SLIST1:
         case MENU_SLIST2:
@@ -426,6 +428,7 @@ void MENU_AcceptSetting(void)
             gEeprom.BATTERY_SAVE = gSubMenuSelection;
             break;
 
+#ifdef ENABLE_VOX
         #ifdef ENABLE_VOX
             case MENU_VOX:
                 gEeprom.VOX_SWITCH = gSubMenuSelection != 0;
@@ -436,6 +439,7 @@ void MENU_AcceptSetting(void)
                 gUpdateStatus        = true;
                 break;
         #endif
+#endif
 
         case MENU_ABR:
             gEeprom.BACKLIGHT_TIME = gSubMenuSelection;
@@ -535,11 +539,13 @@ void MENU_AcceptSetting(void)
             gFlagReconfigureVfos = true;
             break;
 
+#ifdef ENABLE_AUDIO_BAR
         #ifdef ENABLE_AUDIO_BAR
             case MENU_MIC_BAR:
                 gSetting_mic_bar = gSubMenuSelection;
                 break;
         #endif
+#endif
 
         case MENU_COMPAND:
             gTxVfo->Compander = gSubMenuSelection;
@@ -769,13 +775,17 @@ void MENU_AcceptSetting(void)
             gSetting_set_eot = gSubMenuSelection;
             break;
 #ifdef ENABLE_FEAT_F4HWN_CTR
+#ifdef ENABLE_FEAT_F4HWN_CTR
         case MENU_SET_CTR:
             gSetting_set_ctr = gSubMenuSelection;
             break;
 #endif
+#endif
+#ifdef ENABLE_FEAT_F4HWN_INV
         case MENU_SET_INV:
             gSetting_set_inv = gSubMenuSelection;
             break;
+#endif
         case MENU_SET_LCK:
             gSetting_set_lck = gSubMenuSelection;
             break;
