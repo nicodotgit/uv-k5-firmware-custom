@@ -543,56 +543,23 @@ void ACTION_Ptt(void)
 
 void ACTION_Wn(void)
 {
-    #ifdef ENABLE_FEAT_F4HWN_NARROWER
-        bool narrower = 0;
-        if (FUNCTION_IsRx())
-        {
-            gRxVfo->CHANNEL_BANDWIDTH = (gRxVfo->CHANNEL_BANDWIDTH == 0) ? 1: 0;
-            if(gRxVfo->CHANNEL_BANDWIDTH == BANDWIDTH_NARROW && gSetting_set_nfm == 1)
-            {
-                narrower = 1;
-            }
+    VFO_Info_t *pVfo = FUNCTION_IsRx() ? gRxVfo : gTxVfo;
 
-            #ifdef ENABLE_AM_FIX
-                BK4819_SetFilterBandwidth(gRxVfo->CHANNEL_BANDWIDTH + narrower, true);
-            #else
-                BK4819_SetFilterBandwidth(gRxVfo->CHANNEL_BANDWIDTH + narrower, false);
-            #endif
-        }
-        else
-        {
-            gTxVfo->CHANNEL_BANDWIDTH = (gTxVfo->CHANNEL_BANDWIDTH == 0) ? 1: 0;
-            if(gTxVfo->CHANNEL_BANDWIDTH == BANDWIDTH_NARROW && gSetting_set_nfm == 1)
-            {
-                narrower = 1;
-            }
+    pVfo->CHANNEL_BANDWIDTH ^= 1;
+    
+    uint8_t bw = pVfo->CHANNEL_BANDWIDTH;
 
-            #ifdef ENABLE_AM_FIX
-                BK4819_SetFilterBandwidth(gTxVfo->CHANNEL_BANDWIDTH, true);
-            #else
-                BK4819_SetFilterBandwidth(gTxVfo->CHANNEL_BANDWIDTH, false);
-            #endif
-        }
-    #else
-        if (FUNCTION_IsRx())
-        {
-            gRxVfo->CHANNEL_BANDWIDTH = (gRxVfo->CHANNEL_BANDWIDTH == 0) ? 1: 0;
-            #ifdef ENABLE_AM_FIX
-                BK4819_SetFilterBandwidth(gRxVfo->CHANNEL_BANDWIDTH, true);
-            #else
-                BK4819_SetFilterBandwidth(gRxVfo->CHANNEL_BANDWIDTH, false);
-            #endif
-        }
-        else
-        {
-            gTxVfo->CHANNEL_BANDWIDTH = (gTxVfo->CHANNEL_BANDWIDTH == 0) ? 1: 0;
-            #ifdef ENABLE_AM_FIX
-                BK4819_SetFilterBandwidth(gTxVfo->CHANNEL_BANDWIDTH, true);
-            #else
-                BK4819_SetFilterBandwidth(gTxVfo->CHANNEL_BANDWIDTH, false);
-            #endif
-        }
-    #endif
+#ifdef ENABLE_FEAT_F4HWN_NARROWER
+    if (bw == BANDWIDTH_NARROW && gSetting_set_nfm == 1) {
+        bw++;
+    }
+#endif
+
+#ifdef ENABLE_AM_FIX
+    BK4819_SetFilterBandwidth(bw, true);
+#else
+    BK4819_SetFilterBandwidth(bw, false);
+#endif
 }
 
 void ACTION_BackLight(void)
