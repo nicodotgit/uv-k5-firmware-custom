@@ -44,18 +44,17 @@ volatile int8_t   gFM_ScanState;
 bool              gFM_AutoScan;
 uint8_t           gFM_ChannelPosition;
 bool              gFM_FoundFrequency;
-bool              gFM_AutoScan;
 uint16_t          gFM_RestoreCountdown_10ms;
 
 
 
-const uint8_t BUTTON_STATE_PRESSED = 1 << 0;
-const uint8_t BUTTON_STATE_HELD = 1 << 1;
+#define BUTTON_STATE_PRESSED (1 << 0)
+#define BUTTON_STATE_HELD    (1 << 1)
 
-const uint8_t BUTTON_EVENT_PRESSED = BUTTON_STATE_PRESSED;
-const uint8_t BUTTON_EVENT_HELD = BUTTON_STATE_PRESSED | BUTTON_STATE_HELD;
-const uint8_t BUTTON_EVENT_SHORT =  0;
-const uint8_t BUTTON_EVENT_LONG =  BUTTON_STATE_HELD;
+#define BUTTON_EVENT_PRESSED BUTTON_STATE_PRESSED
+#define BUTTON_EVENT_HELD    (BUTTON_STATE_PRESSED | BUTTON_STATE_HELD)
+#define BUTTON_EVENT_SHORT   0
+#define BUTTON_EVENT_LONG    BUTTON_STATE_HELD
 
 
 static void Key_FUNC(KEY_Code_t Key, uint8_t state);
