@@ -146,6 +146,7 @@ void UI_PrintStringSmallBufferBold(const char *pString, uint8_t * buffer)
     UI_PrintStringBuffer(pString, buffer, char_width, font);
 }
 
+#ifdef ENABLE_BIG_FREQ
 void UI_DisplayFrequency(const char *string, uint8_t X, uint8_t Y, bool center)
 {
     const unsigned int char_width  = 13;
@@ -220,6 +221,7 @@ void UI_DisplayFrequency(const char *string, uint8_t X, uint8_t Y, bool center)
     }
 }
 */
+#endif
 
 void UI_DrawPixelBuffer(uint8_t (*buffer)[128], uint8_t x, uint8_t y, bool black)
 {

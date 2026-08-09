@@ -21,7 +21,9 @@
 
 
 extern const uint8_t gFontBig[95 - 1][16 - 2];
-extern const uint8_t gFontBigDigits[11][26 - 6];
+#ifdef ENABLE_BIG_FREQ
+    extern const uint8_t gFontBigDigits[11][26 - 6];
+#endif
 extern const uint8_t gFont3x5[96][3];
 extern const uint8_t gFontSmall[95 - 1][6];
 #ifdef ENABLE_SMALL_BOLD
