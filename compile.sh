@@ -169,6 +169,8 @@ nicodotgit() {
         ENABLE_FLASHLIGHT=1 \
         ENABLE_AM_FIX=1 \
         ENABLE_EXPERIMENTAL_CFLAGS=0 \
+        ENABLE_CTCSS_TAIL_PHASE_SHIFT=1 \
+        ENABLE_FEAT_F4HWN_CA=0 \
         EDITION_STRING=nicodotgit \
         TARGET=f4hwn.nicodotgit
     cp f4hwn.nicodotgit* "$FIRMWARE_DIR"/
