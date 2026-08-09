@@ -97,17 +97,31 @@ static void DrawSmallAntennaAndBars(uint8_t *p, unsigned int level)
 }
 #if defined ENABLE_AUDIO_BAR || defined ENABLE_RSSI_BAR
 
+static const char hollowBar1[] = {
+    0b01111111,
+    0b01000001,
+    0b01000001,
+    0b01111111
+};
+
+#ifdef ENABLE_FEAT_F4HWN
+static const char hollowBar2[] = {
+    0b00111110,
+    0b00100010,
+    0b00100010,
+    0b00111110
+};
+
+static const char simpleBar[] = {
+    0b00111110,
+    0b00111110,
+    0b00111110,
+    0b00111110
+};
+#endif
+
 static void DrawLevelBar(uint8_t xpos, uint8_t line, uint8_t level, uint8_t bars)
 {
-#ifndef ENABLE_FEAT_F4HWN
-    const char hollowBar[] = {
-        0b01111111,
-        0b01000001,
-        0b01000001,
-        0b01111111
-    };
-#endif
-    
     uint8_t *p_line = gFrameBuffer[line];
     level = MIN(level, bars);
 
@@ -115,42 +129,21 @@ static void DrawLevelBar(uint8_t xpos, uint8_t line, uint8_t level, uint8_t bars
 #ifdef ENABLE_FEAT_F4HWN
         if(gSetting_set_met)
         {
-            const char hollowBar[] = {
-                0b01111111,
-                0b01000001,
-                0b01000001,
-                0b01111111
-            };
-
             if(i < bars - 4) {
                 for(uint8_t j = 0; j < 4; j++)
                     p_line[xpos + i * 5 + j] = (~(0x7F >> (i + 1))) & 0x7F;
             }
             else {
-                memcpy(p_line + (xpos + i * 5), &hollowBar, ARRAY_SIZE(hollowBar));
+                memcpy(p_line + (xpos + i * 5), &hollowBar1, ARRAY_SIZE(hollowBar1));
             }
         }
         else
         {
-            const char hollowBar[] = {
-                0b00111110,
-                0b00100010,
-                0b00100010,
-                0b00111110
-            };
-
-            const char simpleBar[] = {
-                0b00111110,
-                0b00111110,
-                0b00111110,
-                0b00111110
-            };
-
             if(i < bars - 4) {
                 memcpy(p_line + (xpos + i * 5), &simpleBar, ARRAY_SIZE(simpleBar));
             }
             else {
-                memcpy(p_line + (xpos + i * 5), &hollowBar, ARRAY_SIZE(hollowBar));
+                memcpy(p_line + (xpos + i * 5), &hollowBar2, ARRAY_SIZE(hollowBar2));
             }
         }
 #else
@@ -159,7 +152,7 @@ static void DrawLevelBar(uint8_t xpos, uint8_t line, uint8_t level, uint8_t bars
                 p_line[xpos + i * 5 + j] = (~(0x7F >> (i+1))) & 0x7F;
         }
         else {
-            memcpy(p_line + (xpos + i * 5), &hollowBar, ARRAY_SIZE(hollowBar));
+            memcpy(p_line + (xpos + i * 5), &hollowBar1, ARRAY_SIZE(hollowBar1));
         }
 #endif
     }
@@ -240,6 +233,18 @@ void UI_DisplayAudioBar(void)
 }
 #endif
 
+#ifndef ENABLE_FEAT_F4HWN
+static const char plus[] = {
+    0b00011000,
+    0b00011000,
+    0b01111110,
+    0b01111110,
+    0b01111110,
+    0b00011000,
+    0b00011000,
+};
+#endif
+
 void DisplayRSSIBar(const bool now)
 {
 #if defined(ENABLE_RSSI_BAR)
@@ -293,18 +298,6 @@ void DisplayRSSIBar(const bool now)
 #endif
     uint8_t           *p_line        = gFrameBuffer[line];
     char               str[16];
-
-#ifndef ENABLE_FEAT_F4HWN
-    const char plus[] = {
-        0b00011000,
-        0b00011000,
-        0b01111110,
-        0b01111110,
-        0b01111110,
-        0b00011000,
-        0b00011000,
-    };
-#endif
 
     if ((gEeprom.KEY_LOCK && gKeypadLocked > 0) || center_line != CENTER_LINE_RSSI)
         return;     // display is in use
