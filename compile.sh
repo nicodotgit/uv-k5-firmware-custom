@@ -184,7 +184,7 @@ case "$1" in
     basic) basic ;;
     rescueops) rescueops ;;
     game) game ;;
-    nicogit) nicodotgit ;;
+    nicodotgit) nicodotgit ;;
     all)
         bandscope
         broadcast

@@ -11,4 +11,6 @@ compile_commands.json
 k5_eeprom.raw
 f4hwn
 f4hwn.*
+*.bin
+test
 !archive/*/*
