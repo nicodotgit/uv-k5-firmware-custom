@@ -114,7 +114,7 @@ void FM_TurnOff(void)
     AUDIO_AudioPathOff();
     gEnableSpeaker = false;
 
-    BK1080_Init0();
+    BK1080_Init(0, 0);
 
     gUpdateStatus  = true;
 

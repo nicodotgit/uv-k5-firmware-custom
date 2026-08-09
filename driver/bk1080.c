@@ -39,11 +39,6 @@ static bool gIsInitBK1080;
 uint16_t BK1080_BaseFrequency;
 uint16_t BK1080_FrequencyDeviation;
 
-void BK1080_Init0(void)
-{
-    BK1080_Init(0,0/*,0*/);
-}
-
 void BK1080_Init(uint16_t freq, uint8_t band/*, uint8_t space*/)
 {
     unsigned int i;

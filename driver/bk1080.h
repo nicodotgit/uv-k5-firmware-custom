@@ -24,7 +24,7 @@
 extern uint16_t BK1080_BaseFrequency;
 extern uint16_t BK1080_FrequencyDeviation;
 
-void BK1080_Init0(void);
+
 void BK1080_Init(uint16_t Frequency, uint8_t band/*, uint8_t space*/);
 uint16_t BK1080_ReadRegister(BK1080_Register_t Register);
 void BK1080_WriteRegister(BK1080_Register_t Register, uint16_t Value);
