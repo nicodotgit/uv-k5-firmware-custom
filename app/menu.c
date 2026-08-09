@@ -229,53 +229,48 @@ static const uint8_t gMenuLimits[] = {
 #endif
 };
 
+typedef struct __attribute__((packed)) {
+    uint8_t menu_id;
+    int16_t min;
+    int16_t max;
+} MenuLimitsException_t;
+
+static const MenuLimitsException_t gMenuLimitsExceptions[] = {
+    {MENU_ABR_MAX, 1, 10},
+    {MENU_TOT, 5, 179},
+#ifdef ENABLE_DTMF_CALLING
+    {MENU_D_HOLD, 5, 60},
+#endif
+    {MENU_D_PRE, 3, 99},
+#ifdef ENABLE_DTMF_CALLING
+    {MENU_D_LIST, 1, 16},
+#endif
+#if defined(ENABLE_FEAT_F4HWN) && defined(ENABLE_FEAT_F4HWN_CTR)
+    {MENU_SET_CTR, 1, 15},
+#endif
+    {MENU_SLIST1, -1, MR_CHANNEL_LAST},
+    {MENU_SLIST2, -1, MR_CHANNEL_LAST},
+    {MENU_SLIST3, -1, MR_CHANNEL_LAST},
+#ifdef ENABLE_F_CAL_MENU
+    {MENU_F_CALI, -50, 50},
+#endif
+    {MENU_BATCAL, 1600, 2200}
+};
+
 int MENU_GetLimits(uint8_t menu_id, int32_t *pMin, int32_t *pMax)
 {
-    switch (menu_id) {
-        case MENU_ABR_MAX:
-            *pMin = 1; *pMax = 10; return 0;
-        case MENU_TOT:
-            *pMin = 5; *pMax = 179; return 0;
-#ifdef ENABLE_DTMF_CALLING
-        case MENU_D_HOLD:
-            *pMin = 5; *pMax = 60; return 0;
-#endif
-        case MENU_D_PRE:
-            *pMin = 3; *pMax = 99; return 0;
-#ifdef ENABLE_DTMF_CALLING
-        case MENU_D_LIST:
-            *pMin = 1; *pMax = 16; return 0;
-#endif
-#ifdef ENABLE_FEAT_F4HWN
-#ifdef ENABLE_FEAT_F4HWN_CTR
-        case MENU_SET_CTR:
-            *pMin = 1; *pMax = 15; return 0;
-#endif
-#endif
-        case MENU_SLIST1:
-        case MENU_SLIST2:
-        case MENU_SLIST3:
-            *pMin = -1;
-            *pMax = MR_CHANNEL_LAST;
+    if (menu_id >= MENU_F1SHRT && menu_id <= MENU_MLONG) {
+        *pMin = 0;
+        *pMax = gSubMenu_SIDEFUNCTIONS_size - 1;
+        return 0;
+    }
+
+    for (unsigned int i = 0; i < ARRAY_SIZE(gMenuLimitsExceptions); i++) {
+        if (gMenuLimitsExceptions[i].menu_id == menu_id) {
+            *pMin = gMenuLimitsExceptions[i].min;
+            *pMax = gMenuLimitsExceptions[i].max;
             return 0;
-#ifdef ENABLE_F_CAL_MENU
-        case MENU_F_CALI:
-            *pMin = -50;
-            *pMax = 50;
-            return 0;
-#endif
-        case MENU_BATCAL:
-            *pMin = 1600;
-            *pMax = 2200;
-            return 0;
-        case MENU_F1SHRT:
-        case MENU_F1LONG:
-        case MENU_F2SHRT:
-        case MENU_F2LONG:
-        case MENU_MLONG:
-            *pMin = 0;
-            *pMax = gSubMenu_SIDEFUNCTIONS_size - 1;
-            return 0;
+        }
     }
 
     if (menu_id >= ARRAY_SIZE(gMenuLimits))
