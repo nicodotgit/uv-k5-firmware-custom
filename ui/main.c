@@ -1481,9 +1481,17 @@ void UI_DisplayMain(void)
 
                 center_line = CENTER_LINE_CHARGE_DATA;
 
-                sprintf(String, "Charge %u.%02uV %u%%",
-                    gBatteryVoltageAverage / 100, gBatteryVoltageAverage % 100,
-                    BATTERY_VoltsToPercent(gBatteryVoltageAverage));
+                // Animate 0 to 3 dots every 500ms
+                int dots = (gFlashLightBlinkCounter / 50) % 4;
+
+                // Print the maximum length string first to prevent screen ghosting
+                sprintf(String, "Charging... %u%%", BATTERY_VoltsToPercent(gBatteryVoltageAverage));
+                
+                // Dynamically overwrite the dots (indices 8, 9, 10) with spaces
+                for (int i = dots; i < 3; i++) {
+                    String[8 + i] = ' '; 
+                }
+
                 UI_PrintStringSmallNormal(String, 2, 0, 3);
             }
 #endif

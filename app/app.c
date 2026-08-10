@@ -1633,15 +1633,18 @@ void APP_TimeSlice500ms(void)
         }
     }
 
-    // regular display updates (once every 2 sec) - if need be
-    if ((gBatteryCheckCounter & 3) == 0)
+    // Update the charging UI and battery status every 500ms
+    if (gChargingWithTypeC) 
     {
-        if (gChargingWithTypeC || gSetting_battery_text > 0)
-            gUpdateStatus = true;
+        gUpdateStatus = true;
         #ifdef ENABLE_SHOW_CHARGE_LEVEL
-            if (gChargingWithTypeC)
-                gUpdateDisplay = true;
+            gUpdateDisplay = true;
         #endif
+    } 
+    // Otherwise, only update the battery text status every 2 seconds
+    else if ((gBatteryCheckCounter & 3) == 0 && gSetting_battery_text > 0) 
+    {
+        gUpdateStatus = true;
     }
 
     if (!gCssBackgroundScan && gScanStateDir == SCAN_OFF && !SCANNER_IsScanning()
