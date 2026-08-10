@@ -227,11 +227,6 @@ const char gSubMenu_OFF_ON[][4] =
     "ON"
 };
 
-const char gSubMenu_NA[4] =
-{
-    "N/A"
-};
-
 const char* const gSubMenu_RXMode[] =
 {
     "MAIN\nONLY",       // TX and RX on main only
@@ -382,12 +377,6 @@ const char gSubMenu_SCRAMBLER[][7] =
         "5"
     };
 
-    const char gSubMenu_SET_PTT[][8] =
-    {
-        "CLASSIC",
-        "ONEPUSH"
-    };
-
     const char gSubMenu_SET_TOT[][7] =  // Use by SET_EOT too
     {
         "OFF",
@@ -400,12 +389,6 @@ const char gSubMenu_SCRAMBLER[][7] =
     {
         "KEYS",
         "KEYS+PTT"
-    };
-
-    const char gSubMenu_SET_MET[][8] =
-    {
-        "TINY",
-        "CLASSIC"
     };
 
     #ifdef ENABLE_FEAT_F4HWN_NARROWER
@@ -636,11 +619,7 @@ void UI_DisplayMenu(void)
 
 #ifdef ENABLE_AUDIO_BAR
         case MENU_MIC_BAR:
-            #ifdef ENABLE_AUDIO_BAR
-                strcpy(String, gSubMenu_OFF_ON[gSubMenuSelection]);
-            #else
-                strcpy(String, gSubMenu_NA);
-            #endif
+            strcpy(String, gSubMenu_OFF_ON[gSubMenuSelection]);
             break;
 #endif
 
@@ -721,11 +700,7 @@ void UI_DisplayMenu(void)
 
 #ifdef ENABLE_VOX
         case MENU_VOX:
-            #ifdef ENABLE_VOX
-                sprintf(String, gSubMenuSelection == 0 ? gSubMenu_OFF_ON[0] : "%u", gSubMenuSelection);
-            #else
-                strcpy(String, gSubMenu_NA);
-            #endif
+            sprintf(String, gSubMenuSelection == 0 ? gSubMenu_OFF_ON[0] : "%u", gSubMenuSelection);
             break;
 #endif
 
@@ -825,59 +800,34 @@ void UI_DisplayMenu(void)
         case MENU_MEM_CH:
         case MENU_1_CALL:
         case MENU_DEL_CH:
-        {
-            const bool valid = RADIO_CheckValidChannel(gSubMenuSelection, false, 0);
-
-            UI_GenerateChannelStringEx(String, valid, gSubMenuSelection);
-            UI_PrintString(String, menu_item_x1, menu_item_x2, 0, 8);
-
-            if (valid && !gAskForConfirmation)
-            {   // show the frequency so that the user knows the channels frequency
-                const uint32_t frequency = SETTINGS_FetchChannelFrequency(gSubMenuSelection);
-                sprintf(String, "%u.%05u", frequency / 100000, frequency % 100000);
-                UI_PrintString(String, menu_item_x1, menu_item_x2, 4, 8);
-            }
-
-            SETTINGS_FetchChannelName(String, gSubMenuSelection);
-            UI_PrintString(String[0] ? String : "--", menu_item_x1, menu_item_x2, 2, 8);
-            already_printed = true;
-            break;
-        }
-
         case MENU_MEM_NAME:
         {
             const bool valid = RADIO_CheckValidChannel(gSubMenuSelection, false, 0);
+            const int current_menu = UI_MENU_GetCurrentMenuId(); // Cached to prevent multiple function calls
 
             UI_GenerateChannelStringEx(String, valid, gSubMenuSelection);
             UI_PrintString(String, menu_item_x1, menu_item_x2, 0, 8);
 
-            if (valid)
-            {
-                const uint32_t frequency = SETTINGS_FetchChannelFrequency(gSubMenuSelection);
+            if (current_menu == MENU_MEM_NAME && !gIsInSubMenu)
+                edit_index = -1;
 
-                //if (!gIsInSubMenu || edit_index < 0)
-                if (!gIsInSubMenu)
-                    edit_index = -1;
-                if (edit_index < 0)
-                {   // show the channel name
+            if (current_menu != MENU_MEM_NAME || edit_index < 0) {
+                if (valid) {
                     SETTINGS_FetchChannelName(String, gSubMenuSelection);
-                    char *pPrintStr = String[0] ? String : "--";
-                    UI_PrintString(pPrintStr, menu_item_x1, menu_item_x2, 2, 8);
+                } else {
+                    String[0] = 0; // Empty string
                 }
-                else
-                {   // show the channel name being edited
-                    //UI_PrintString(edit, menu_item_x1, 0, 2, 8);
-                    UI_PrintString(edit, menu_item_x1, menu_item_x2, 2, 8);
-                    if (edit_index < 10)
-                        //UI_PrintString("^", menu_item_x1 + (8 * edit_index), 0, 4, 8);  // show the cursor
-                        UI_PrintString("^", menu_item_x1 - 1 + (8 * edit_index),0, 4, 8); // show the cursor
-                }
+                UI_PrintString(String[0] ? String : "--", menu_item_x1, menu_item_x2, 2, 8);
+            } else if (valid) {
+                UI_PrintString(edit, menu_item_x1, menu_item_x2, 2, 8);
+                if (edit_index < 10)
+                    UI_PrintString("^", menu_item_x1 - 1 + (8 * edit_index), 0, 4, 8);
+            }
 
-                if (!gAskForConfirmation)
-                {   // show the frequency so that the user knows the channels frequency
-                    sprintf(String, "%u.%05u", frequency / 100000, frequency % 100000);
-                    UI_PrintString(String, menu_item_x1, menu_item_x2, 4 + (gIsInSubMenu && edit_index >= 0), 8);
-                }
+            if (valid && !gAskForConfirmation) {
+                const uint32_t frequency = SETTINGS_FetchChannelFrequency(gSubMenuSelection);
+                sprintf(String, "%u.%05u", frequency / 100000, frequency % 100000);
+                UI_PrintString(String, menu_item_x1, menu_item_x2, 4 + (current_menu == MENU_MEM_NAME && edit_index >= 0), 8);
             }
 
             already_printed = true;
@@ -1099,7 +1049,7 @@ void UI_DisplayMenu(void)
             break;
     
         case MENU_SET_PTT:
-            strcpy(String, gSubMenu_SET_PTT[gSubMenuSelection]);
+            strcpy(String, gSubMenuSelection ? "ONEPUSH" : "CLASSIC");
             break;
 
         case MENU_SET_TOT:
@@ -1109,24 +1059,16 @@ void UI_DisplayMenu(void)
 
 #ifdef ENABLE_FEAT_F4HWN_CTR
         case MENU_SET_CTR:
-            #ifdef ENABLE_FEAT_F4HWN_CTR
-                sprintf(String, "%d", gSubMenuSelection);
-                gSetting_set_ctr = gSubMenuSelection;
-                ST7565_ContrastAndInv();
-            #else
-                strcpy(String, gSubMenu_NA);
-            #endif
+            sprintf(String, "%d", gSubMenuSelection);
+            gSetting_set_ctr = gSubMenuSelection;
+            ST7565_ContrastAndInv();
             break;
 #endif
 
 #ifdef ENABLE_FEAT_F4HWN_INV
         case MENU_SET_INV:
-            #ifdef ENABLE_FEAT_F4HWN_INV
-                strcpy(String, gSubMenu_OFF_ON[gSubMenuSelection]);
-                ST7565_ContrastAndInv();
-            #else
-                strcpy(String, gSubMenu_NA);
-            #endif
+            strcpy(String, gSubMenu_OFF_ON[gSubMenuSelection]);
+            ST7565_ContrastAndInv();
             break;
 #endif
 
@@ -1147,7 +1089,7 @@ void UI_DisplayMenu(void)
 
         case MENU_SET_MET:
         case MENU_SET_GUI:
-            strcpy(String, gSubMenu_SET_MET[gSubMenuSelection]); // Same as SET_MET
+            strcpy(String, gSubMenuSelection ? "CLASSIC" : "TINY"); // Same as SET_MET
             break;
 
         #ifdef ENABLE_FEAT_F4HWN_NARROWER

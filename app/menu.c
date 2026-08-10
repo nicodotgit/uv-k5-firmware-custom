@@ -205,7 +205,7 @@ static const uint8_t gMenuLimits[] = {
 #endif
 #ifdef ENABLE_FEAT_F4HWN
     [MENU_SET_PWR] = ARRAY_SIZE(gSubMenu_SET_PWR) - 1,
-    [MENU_SET_PTT] = ARRAY_SIZE(gSubMenu_SET_PTT) - 1,
+    [MENU_SET_PTT] = 1,
     [MENU_SET_TOT] = ARRAY_SIZE(gSubMenu_SET_TOT) - 1,
     [MENU_SET_EOT] = ARRAY_SIZE(gSubMenu_SET_TOT) - 1,
 #ifdef ENABLE_FEAT_F4HWN_CTR
@@ -215,8 +215,8 @@ static const uint8_t gMenuLimits[] = {
     [MENU_SET_INV] = ARRAY_SIZE(gSubMenu_OFF_ON) - 1,
 #endif
     [MENU_SET_LCK] = ARRAY_SIZE(gSubMenu_SET_LCK) - 1,
-    [MENU_SET_MET] = ARRAY_SIZE(gSubMenu_SET_MET) - 1,
-    [MENU_SET_GUI] = ARRAY_SIZE(gSubMenu_SET_MET) - 1,
+    [MENU_SET_MET] = 1,
+    [MENU_SET_GUI] = 1,
 #ifdef ENABLE_FEAT_F4HWN_NARROWER
     [MENU_SET_NFM] = ARRAY_SIZE(gSubMenu_SET_NFM) - 1,
 #endif
