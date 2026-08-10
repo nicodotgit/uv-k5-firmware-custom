@@ -106,16 +106,26 @@ int sprintf_(char* buffer, const char* format, ...) {
                 format++;
             }
             int precision = -1;
-            while (*format >= '0' && *format <= '9') {
-                pad = pad * 10 + (*format - '0');
+            if (*format == '*') {
+                pad = va_arg(va, int);
                 format++;
+            } else {
+                while (*format >= '0' && *format <= '9') {
+                    pad = pad * 10 + (*format - '0');
+                    format++;
+                }
             }
             if (*format == '.') {
                 format++;
-                precision = 0;
-                while (*format >= '0' && *format <= '9') {
-                    precision = precision * 10 + (*format - '0');
+                if (*format == '*') {
+                    precision = va_arg(va, int);
                     format++;
+                } else {
+                    precision = 0;
+                    while (*format >= '0' && *format <= '9') {
+                        precision = precision * 10 + (*format - '0');
+                        format++;
+                    }
                 }
             }
             if (*format == '%') {
