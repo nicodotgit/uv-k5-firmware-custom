@@ -1030,7 +1030,7 @@ void RADIO_PrepareTX(void)
     RADIO_SelectCurrentVfo();
 
 #ifdef ENABLE_FEAT_F4HWN
-        if(TX_freq_check(gCurrentVfo->pTX->Frequency) != 0 && gCurrentVfo->TX_LOCK == true
+        if((TX_freq_check(gCurrentVfo->pTX->Frequency) != 0 || gCurrentVfo->TX_LOCK == true)
     #if defined(ENABLE_ALARM) || defined(ENABLE_TX1750)
             && gAlarmState != ALARM_STATE_SITE_ALARM
     #endif

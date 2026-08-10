@@ -731,7 +731,7 @@ void UI_DisplayMain(void)
 
         uint32_t frequency = gEeprom.VfoInfo[vfo_num].pRX->Frequency;
 
-        if(TX_freq_check(frequency) != 0 && gEeprom.VfoInfo[vfo_num].TX_LOCK == true)
+        if(TX_freq_check(frequency) != 0 || gEeprom.VfoInfo[vfo_num].TX_LOCK == true)
         {
             if(isMainOnly())
                 memcpy(p_line0 + 14, BITMAP_VFO_Lock, sizeof(BITMAP_VFO_Lock));
