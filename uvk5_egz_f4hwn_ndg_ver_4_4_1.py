@@ -113,6 +113,16 @@
 #4.3.0:
 #       add support for k1 & k5(v3)
 
+####################
+
+#4.4.0:
+#       fork created
+#       added custom nicodotgit build
+
+#4.4.1:
+#       optimized codebase
+#       added k5viewer support for the nicodotgit build
+
 import webbrowser
 import os
 
@@ -139,10 +149,10 @@ DEBUG_SHOW_OBFUSCATED_COMMANDS = False
 DEBUG_SHOW_MEMORY_ACTIONS = False
 
 # TODO: remove the driver version when it's in mainline chirp 
-DRIVER_VERSION = "Quansheng UV-K5/K6/5R driver ver: 2025/11/08 (c) EGZUMER + F4HWN v4.3.0"
-FIRMWARE_VERSION_UPDATE = "https://github.com/armel/uv-k5-firmware-custom/releases"
+DRIVER_VERSION = "Quansheng UV-K5/K6/5R driver ver: 2026/08/10 (c) EGZUMER + F4HWN (Fork) v4.4.1"
+FIRMWARE_VERSION_UPDATE = "https://github.com/nicogotgit/uv-k5-firmware-custom/releases"
 
-CHIRP_DRIVER_VERSION_UPDATE = "https://github.com/armel/uv-k5-chirp-driver/releases"
+CHIRP_DRIVER_VERSION_UPDATE = "https://github.com/nicodotgit/uv-k5-firmware-custom/releases"
 
 CHAINE_F4HWN = "https://www.youtube.com/@f4hwn" 
 
