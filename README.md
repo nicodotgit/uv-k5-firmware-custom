@@ -14,6 +14,15 @@ Anyway, have fun.
 > [!CAUTION]
 > I recommend to backup your eeprom with [k5prog](https://github.com/sq5bpf/k5prog) before playing with alternative firmwares. It's a good reflex to have.
 
+<p align="center">
+  <img src="archive/readme-res/1_vfo.png" width="280" />
+  <img src="archive/readme-res/2_fm.png" width="280" />
+  <img src="archive/readme-res/3_flock.png" width="280" />
+  <img src="archive/readme-res/4_bandscope.png" width="280" />
+  <img src="archive/readme-res/5_bandscope2.png" width="280" />
+  <img src="archive/readme-res/6_about.png" width="280" />
+</p>
+
 ## Table of Contents
 
 * [Firmware Variants](#firmware-variants)
