@@ -195,7 +195,7 @@ def main():
     parser = argparse.ArgumentParser(
         prog="K5Viewer",
         description="A live viewer for UV-K5 radios with F4HWN firmware",
-        epilog="F4HWN repo: https://github.com/armel/uv-k5-firmware-custom"
+        epilog="F4HWN (Fork) repo: https://github.com/nicodotgit/uv-k5-firmware-custom"
     )
     parser.add_argument("--list-ports", action="store_true", help="list available ports and exit")
     parser.add_argument("--port", type=str, help="serial port to use (in place of 'DEFAULT_PORT')")
