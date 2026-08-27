@@ -136,6 +136,7 @@ const uint8_t BITMAP_BatteryLevel1[17] =
     0b01111111
 };
 
+#ifdef ENABLE_FEAT_F4HWN_CHARGING_C
 const uint8_t BITMAP_USB_C[9] =
 {
     0b00000000,
@@ -148,6 +149,7 @@ const uint8_t BITMAP_USB_C[9] =
     0b00100111,
     0b00011100
 };
+#endif
 
 #ifdef ENABLE_VOX
     const uint8_t gFontVox[2][6] =

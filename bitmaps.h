@@ -24,7 +24,9 @@ extern const uint8_t gFontHold[2][5];
 
 extern const uint8_t BITMAP_BatteryLevel[2];
 extern const uint8_t BITMAP_BatteryLevel1[17];
+#ifdef ENABLE_FEAT_F4HWN_CHARGING_C
 extern const uint8_t BITMAP_USB_C[9];
+#endif
 
 /*
 extern const uint8_t BITMAP_Ready[7];
