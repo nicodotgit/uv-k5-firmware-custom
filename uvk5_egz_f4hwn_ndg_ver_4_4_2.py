@@ -123,6 +123,10 @@
 #       optimized codebase
 #       added k5viewer support for the nicodotgit build
 
+#4.4.2:
+#       fixed bug with F Lock plans on VFO
+#       renamed "nicodotgit" build to "Pro"
+
 import webbrowser
 import os
 
@@ -149,7 +153,7 @@ DEBUG_SHOW_OBFUSCATED_COMMANDS = False
 DEBUG_SHOW_MEMORY_ACTIONS = False
 
 # TODO: remove the driver version when it's in mainline chirp 
-DRIVER_VERSION = "Quansheng UV-K5/K6/5R driver ver: 2026/08/10 (c) EGZUMER + F4HWN (Fork) v4.4.1"
+DRIVER_VERSION = "Quansheng UV-K5/K6/5R driver ver: 2026/08/26 (c) EGZUMER + F4HWN (Fork) v4.4.2"
 FIRMWARE_VERSION_UPDATE = "https://github.com/nicogotgit/uv-k5-firmware-custom/releases"
 
 CHIRP_DRIVER_VERSION_UPDATE = "https://github.com/nicodotgit/uv-k5-firmware-custom/releases"
@@ -1891,7 +1895,7 @@ class UVK5RadioEgzumer(chirp_common.CloneModeRadio):
                     ValFirm = ValFirm + " Fusion Edition"
                 elif _mem.BUILD_OPTIONS.ENABLE_FMRADIO and _mem.BUILD_OPTIONS.ENABLE_BANDSCOPE :          
                     if _mem.BUILD_OPTIONS.ENABLE_FEAT_F4HWN_CTR :
-                        ValFirm = ValFirm + " nicodotgit Edition"
+                        ValFirm = ValFirm + " Pro Edition"
                     else :
                         ValFirm = ValFirm + " Basic Edition"
                 elif _mem.BUILD_OPTIONS.ENABLE_FEAT_F4HWN_RESCUE_OPS :   
