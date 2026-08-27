@@ -135,8 +135,8 @@ game() {
     cp f4hwn.game* "$FIRMWARE_DIR"/
 }
 
-nicodotgit() {
-    echo "🧰 Compiling nicodotgit..."
+pro() {
+    echo "🧰 Compiling Pro..."
     make clean
     make -s \
         ENABLE_SPECTRUM=1 \
@@ -171,9 +171,9 @@ nicodotgit() {
         ENABLE_EXPERIMENTAL_CFLAGS=0 \
         ENABLE_CTCSS_TAIL_PHASE_SHIFT=1 \
         ENABLE_FEAT_F4HWN_CA=0 \
-        EDITION_STRING=nicodotgit \
-        TARGET=f4hwn.nicodotgit
-    cp f4hwn.nicodotgit* "$FIRMWARE_DIR"/
+        EDITION_STRING=Pro \
+        TARGET=f4hwn.pro
+    cp f4hwn.pro* "$FIRMWARE_DIR"/
 }
 
 # ------------------ MENU ------------------
@@ -186,17 +186,19 @@ case "$1" in
     basic) basic ;;
     rescueops) rescueops ;;
     game) game ;;
-    nicodotgit) nicodotgit ;;
+    pro) pro ;;
     all)
+        clean
+        standard
         bandscope
         broadcast
         basic
         rescueops
         game
-        nicodotgit
+        pro
         ;;
     *)
-        echo "Usage: $0 {clean|custom|standard|bandscope|broadcast|basic|rescueops|game|nicodotgit|all}"
+        echo "Usage: $0 {clean|custom|standard|bandscope|broadcast|basic|rescueops|game|pro|all}"
         exit 1
         ;;
 esac
