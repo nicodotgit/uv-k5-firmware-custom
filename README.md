@@ -5,7 +5,7 @@ This repository is a fork of the [Original F4HWN firmware](https://github.com/ar
 All is a cloned and customized version of DualTachyon's open firmware found [here](https://github.com/DualTachyon/uv-k5-firmware) ... a cool achievement !
 
 > [!NOTE]
-> About Chirp, as many others firmwares, you need to use a dedicated driver available in [this repository](https://github.com/nicodotgit/uv-k5-firmware-custom/blob/main/uvk5_egz_f4hwn_ndg_ver_4_4_1.py).
+> About Chirp, as many others firmwares, you need to use a dedicated driver available in [this repository](https://github.com/nicodotgit/uv-k5-firmware-custom/blob/main/uvk5_egz_f4hwn_ndg_ver_4_4_2.py).
 
 > [!WARNING]
 > THIS FIRMWARE HAS NO REAL BRAIN. PLEASE USE YOUR OWN. Use this firmware at your own risk (entirely). There is absolutely no guarantee that it will work in any way shape or form on your radio(s), it may even brick your radio(s), in which case, you'd need to buy another radio.
@@ -26,7 +26,7 @@ Anyway, have fun.
 ## Table of Contents
 
 * [Firmware Variants](#firmware-variants)
-* [nicodotgit Changes](#custom-changes-by-nicodotgit-this-fork)
+* [Fork Changes](#custom-changes-on-this-fork)
 * [F4HWN Features](#main-features-and-improvements-from-f4hwn)
 * [Egzumer Features](#main-features-from-egzumer)
 * [Manual](#manual)
@@ -44,20 +44,20 @@ Several firmware versions are available, each tailored to a specific use case be
 
 | Edition | Build Size & Space | Key Features |
 |---------|--------------------|--------------|
-| 🧰 **[nicodotgit (Custom)](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.nicodotgit.packed.bin)** | **Size:** 61,432 bytes<br>**Free:** 8 bytes | ✅ FM Broadcast<br>✅ Bandscope<br>✅ K5 Viewer<br>🚫 VOX / Air Copy<br>✅ All other features enabled |
-| 📺 **[Bandscope edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.bandscope.packed.bin)** | **Size:** 60,788 bytes<br>**Free:** 652 bytes | ✅ Bandscope<br>🚫 FM Broadcast<br>🚫 VOX<br>✅ Air Copy<br>✅ K5 Viewer<br>✅ All other features enabled |
-| 📻 **[Broadcast edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.broadcast.packed.bin)** | **Size:** 59,040 bytes<br>**Free:** 2,400 bytes | ✅ FM Broadcast<br>🚫 Bandscope<br>✅ VOX<br>✅ Air Copy<br>✅ K5 Viewer<br>✅ All other features enabled |
-| 🚨 **[RescueOps edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.rescueops.packed.bin)** | **Size:** 56,704 bytes<br>**Free:** 4,736 bytes | ✅ First responder oriented<br>🚫 FM Broadcast<br>🚫 Bandscope<br>✅ VOX<br>✅ Air Copy<br>✅ K5 Viewer<br>✅ NOAA weather<br>✅ All other features enabled |
-| ☘️ **[Basic edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.basic.packed.bin)** | **Size:** 60,820 bytes<br>**Free:** 620 bytes | ✅ FM Broadcast<br>✅ Bandscope *(simplified)*<br>🚫 VOX<br>🚫 Air Copy<br>🚫 K5 Viewer<br><br>*Some features had to be disabled because of limited available memory...*<br><br>🚫 Audio Bar<br>🚫 CTR/Contrast Menu<br>🚫 Resume State<br>🚫 Charging C |
-| 🎮 **[Game edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.game.packed.bin)** | **Size:** 60,128 bytes<br>**Free:** 1,312 bytes | ✅ Built-in Breakout-style game<br>✅ FM Broadcast<br>🚫 Bandscope<br>🚫 VOX<br>✅ Air Copy<br>🚫 K5 Viewer<br>✅ All other features enabled |
+| 🧰 **[Pro (Custom)](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.pro.packed.bin)** | **Size:** 61,440 bytes<br>**Free:** 0 bytes | ✅ FM Broadcast<br>✅ Bandscope<br>✅ K5 Viewer<br>🚫 VOX / Air Copy<br>✅ All other features enabled |
+| 📺 **[Bandscope edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.bandscope.packed.bin)** | **Size:** 60,800 bytes<br>**Free:** 640 bytes | ✅ Bandscope<br>🚫 FM Broadcast<br>🚫 VOX<br>✅ Air Copy<br>✅ K5 Viewer<br>✅ All other features enabled |
+| 📻 **[Broadcast edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.broadcast.packed.bin)** | **Size:** 59,048 bytes<br>**Free:** 2,392 bytes | ✅ FM Broadcast<br>🚫 Bandscope<br>✅ VOX<br>✅ Air Copy<br>✅ K5 Viewer<br>✅ All other features enabled |
+| 🚨 **[RescueOps edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.rescueops.packed.bin)** | **Size:** 56,712 bytes<br>**Free:** 4,728 bytes | ✅ First responder oriented<br>🚫 FM Broadcast<br>🚫 Bandscope<br>✅ VOX<br>✅ Air Copy<br>✅ K5 Viewer<br>✅ NOAA weather<br>✅ All other features enabled |
+| ☘️ **[Basic edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.basic.packed.bin)** | **Size:** 60,832 bytes<br>**Free:** 608 bytes | ✅ FM Broadcast<br>✅ Bandscope *(simplified)*<br>🚫 VOX<br>🚫 Air Copy<br>🚫 K5 Viewer<br><br>*Some features had to be disabled because of limited available memory...*<br><br>🚫 Audio Bar<br>🚫 CTR/Contrast Menu<br>🚫 Resume State<br>🚫 Charging C |
+| 🎮 **[Game edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.game.packed.bin)** | **Size:** 60,136 bytes<br>**Free:** 1,304 bytes | ✅ Built-in Breakout-style game<br>✅ FM Broadcast<br>🚫 Bandscope<br>🚫 VOX<br>✅ Air Copy<br>🚫 K5 Viewer<br>✅ All other features enabled |
 
-## Custom changes by nicodotgit (This Fork)
+## Custom changes on this fork
 
 * **Repository Cleanup:** Removed unneeded precompiled archives and images, and pruned unused GitHub actions workflows.
 * **Memory & Performance Optimizations:** Replaced the external `printf` library with a minimalist custom formatter to aggressively save flash space. Converted primitives to `#define` macros, replaced `MENU_GetLimits` with a packed static look-up table, abbreviated labels, and conditionally stripped unused fonts and menu strings.
 * **Firmware & Security Fixes:** Enforced TX lock across global frequencies to prevent F-Lock bypass vulnerabilities. Added bounds checking on the FSK buffer, corrected 108MHz bounds checks, and resolved compander display bugs on disabled scanlist channels.
 * **UI & Display Enhancements:** Added animated charging text, optimized display refresh logic, and added a perfectly centered small font fallback for FM radio and AirCopy. Tweaked ST7565 inverse display command and renamed menu entries.
-* **Custom Build (`nicodotgit` edition):** Added a streamlined build target that enables Spectrum Analyzer, FM Radio, custom menu layout, K5 Viewer, and AM fix, but strictly removes Vox, Aircopy, NOAA, Rescue Ops, Games, PMR/GMRS, Alarms, and DTMF Calling to fit the 60KB limit.
+* **Custom Build (`Pro` edition):** Added a streamlined build target that enables Spectrum Analyzer, FM Radio, custom menu layout, K5 Viewer, and AM fix, but strictly removes Vox, Aircopy, NOAA, Rescue Ops, Games, PMR/GMRS, Alarms, and DTMF Calling to fit the 60KB limit.
 * **Code Quality & Build System:** Removed extensive dead code and commented-out blocks. Optimized compiler flags, improved the linker script, and updated the CHIRP driver to fit as an internal custom module.
 
 ## Main features and improvements from F4HWN:
@@ -260,7 +260,7 @@ You can build the firmware using the provided `compile.sh` wrapper script which 
     ```
 2. Run the build script with your desired variant:
     ```bash
-    ./compile.sh nicodotgit    # Compiles the custom Nicodotgit build
+    ./compile.sh pro        # Compiles the custom Pro build
     ./compile.sh bandscope  # Compiles the Bandscope version
     ./compile.sh broadcast  # Compiles the Broadcast version
     ./compile.sh basic      # Compiles the Basic version
