@@ -5,7 +5,7 @@ This repository is a fork of the [Original F4HWN firmware](https://github.com/ar
 All is a cloned and customized version of DualTachyon's open firmware found [here](https://github.com/DualTachyon/uv-k5-firmware) ... a cool achievement !
 
 > [!NOTE]
-> About Chirp, as many others firmwares, you need to use a dedicated driver available in [this repository](https://github.com/nicodotgit/uv-k5-firmware-custom/blob/main/uvk5_egz_f4hwn_ndg_ver_4_4_2.py).
+> About Chirp, as many others firmwares, you need to use a dedicated driver available in [this repository](https://github.com/nicodotgit/uv-k5-firmware-custom/blob/main/uvk5_egz_f4hwn_ndg_ver_4_5.py).
 
 > [!WARNING]
 > THIS FIRMWARE HAS NO REAL BRAIN. PLEASE USE YOUR OWN. Use this firmware at your own risk (entirely). There is absolutely no guarantee that it will work in any way shape or form on your radio(s), it may even brick your radio(s), in which case, you'd need to buy another radio.
@@ -44,12 +44,12 @@ Several firmware versions are available, each tailored to a specific use case be
 
 | Edition | Build Size & Space | Key Features |
 |---------|--------------------|--------------|
-| 🧰 **[Pro (Custom)](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.pro.packed.bin)** | **Size:** 61,436 bytes<br>**Free:** 4 bytes | ✅ FM Broadcast<br>✅ Bandscope<br>✅ K5 Viewer<br>🚫 VOX / Air Copy<br>✅ All other features enabled |
-| 📺 **[Bandscope edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.bandscope.packed.bin)** | **Size:** 60,796 bytes<br>**Free:** 644 bytes | ✅ Bandscope<br>🚫 FM Broadcast<br>🚫 VOX<br>✅ Air Copy<br>✅ K5 Viewer<br>✅ All other features enabled |
-| 📻 **[Broadcast edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.broadcast.packed.bin)** | **Size:** 59,044 bytes<br>**Free:** 2,396 bytes | ✅ FM Broadcast<br>🚫 Bandscope<br>✅ VOX<br>✅ Air Copy<br>✅ K5 Viewer<br>✅ All other features enabled |
-| 🚨 **[RescueOps edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.rescueops.packed.bin)** | **Size:** 56,708 bytes<br>**Free:** 4,732 bytes | ✅ First responder oriented<br>🚫 FM Broadcast<br>🚫 Bandscope<br>✅ VOX<br>✅ Air Copy<br>✅ K5 Viewer<br>✅ NOAA weather<br>✅ All other features enabled |
-| ☘️ **[Basic edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.basic.packed.bin)** | **Size:** 60,828 bytes<br>**Free:** 612 bytes | ✅ FM Broadcast<br>✅ Bandscope *(simplified)*<br>🚫 VOX<br>🚫 Air Copy<br>🚫 K5 Viewer<br><br>*Some features had to be disabled because of limited available memory...*<br><br>🚫 Audio Bar<br>🚫 CTR/Contrast Menu<br>🚫 Resume State<br>🚫 Charging C |
-| 🎮 **[Game edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.game.packed.bin)** | **Size:** 60,136 bytes<br>**Free:** 1,304 bytes | ✅ Built-in Breakout-style game<br>✅ FM Broadcast<br>🚫 Bandscope<br>🚫 VOX<br>✅ Air Copy<br>🚫 K5 Viewer<br>✅ All other features enabled |
+| 🧰 **[Pro](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.pro.packed.bin)** | **Size:** 61,400 bytes<br>**Free:** 40 bytes | ✅ FM Broadcast<br>✅ Bandscope<br>✅ K5 Viewer<br>🚫 VOX / Air Copy<br>✅ All other features enabled |
+| 📺 **[Bandscope edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.bandscope.packed.bin)** | **Size:** 60,860 bytes<br>**Free:** 580 bytes | ✅ Bandscope<br>🚫 FM Broadcast<br>🚫 VOX<br>✅ Air Copy<br>✅ K5 Viewer<br>✅ All other features enabled |
+| 📻 **[Broadcast edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.broadcast.packed.bin)** | **Size:** 58,996 bytes<br>**Free:** 2,444 bytes | ✅ FM Broadcast<br>🚫 Bandscope<br>✅ VOX<br>✅ Air Copy<br>✅ K5 Viewer<br>✅ All other features enabled |
+| 🚨 **[RescueOps edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.rescueops.packed.bin)** | **Size:** 56,836 bytes<br>**Free:** 4,604 bytes | ✅ First responder oriented<br>🚫 FM Broadcast<br>🚫 Bandscope<br>✅ VOX<br>✅ Air Copy<br>✅ K5 Viewer<br>✅ NOAA weather<br>✅ All other features enabled |
+| ☘️ **[Basic edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.basic.packed.bin)** | **Size:** 60,908 bytes<br>**Free:** 532 bytes | ✅ FM Broadcast<br>✅ Bandscope *(simplified)*<br>🚫 VOX<br>🚫 Air Copy<br>🚫 K5 Viewer<br><br>*Some features had to be disabled because of limited available memory...*<br><br>🚫 Audio Bar<br>🚫 CTR/Contrast Menu<br>🚫 Resume State<br>🚫 Charging C |
+| 🎮 **[Game edition](https://armel.github.io/uvtools/?firmwareURL=https://github.com/nicodotgit/uv-k5-firmware-custom/raw/main/archive/latest/f4hwn.game.packed.bin)** | **Size:** 60,084 bytes<br>**Free:** 1,356 bytes | ✅ Built-in Breakout-style game<br>✅ FM Broadcast<br>🚫 Bandscope<br>🚫 VOX<br>✅ Air Copy<br>🚫 K5 Viewer<br>✅ All other features enabled |
 
 ## Custom changes on this fork
 
