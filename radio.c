@@ -260,49 +260,28 @@ void RADIO_ConfigureChannel(const unsigned int VFO, const unsigned int configure
         pVfo->freq_config_RX.CodeType = (data[2] >> 0) & 0x0F;
         pVfo->freq_config_TX.CodeType = (data[2] >> 4) & 0x0F;
 
-        tmp = data[0];
-        switch (pVfo->freq_config_RX.CodeType)
-        {
-            default:
-            case CODE_TYPE_OFF:
-                pVfo->freq_config_RX.CodeType = CODE_TYPE_OFF;
-                tmp = 0;
-                break;
-
-            case CODE_TYPE_CONTINUOUS_TONE:
-                if (tmp > (ARRAY_SIZE(CTCSS_Options) - 1))
+        FREQ_Config_t *cfgs[] = { &pVfo->freq_config_RX, &pVfo->freq_config_TX };
+        for (int i = 0; i < 2; i++) {
+            tmp = data[i];
+            switch (cfgs[i]->CodeType)
+            {
+                case CODE_TYPE_CONTINUOUS_TONE:
+                    if (tmp > (ARRAY_SIZE(CTCSS_Options) - 1))
+                        tmp = 0;
+                    break;
+                case CODE_TYPE_DIGITAL:
+                case CODE_TYPE_REVERSE_DIGITAL:
+                    if (tmp > (ARRAY_SIZE(DCS_Options) - 1))
+                        tmp = 0;
+                    break;
+                default:
+                case CODE_TYPE_OFF:
+                    cfgs[i]->CodeType = CODE_TYPE_OFF;
                     tmp = 0;
-                break;
-
-            case CODE_TYPE_DIGITAL:
-            case CODE_TYPE_REVERSE_DIGITAL:
-                if (tmp > (ARRAY_SIZE(DCS_Options) - 1))
-                    tmp = 0;
-                break;
+                    break;
+            }
+            cfgs[i]->Code = tmp;
         }
-        pVfo->freq_config_RX.Code = tmp;
-
-        tmp = data[1];
-        switch (pVfo->freq_config_TX.CodeType)
-        {
-            default:
-            case CODE_TYPE_OFF:
-                pVfo->freq_config_TX.CodeType = CODE_TYPE_OFF;
-                tmp = 0;
-                break;
-
-            case CODE_TYPE_CONTINUOUS_TONE:
-                if (tmp > (ARRAY_SIZE(CTCSS_Options) - 1))
-                    tmp = 0;
-                break;
-
-            case CODE_TYPE_DIGITAL:
-            case CODE_TYPE_REVERSE_DIGITAL:
-                if (tmp > (ARRAY_SIZE(DCS_Options) - 1))
-                    tmp = 0;
-                break;
-        }
-        pVfo->freq_config_TX.Code = tmp;
 
         if (data[4] == 0xFF)
         {

@@ -500,21 +500,11 @@ void MENU_AcceptSetting(void)
             break;
 
         case MENU_S_ADD1:
-            gTxVfo->SCANLIST1_PARTICIPATION = gSubMenuSelection;
-            SETTINGS_UpdateChannel(gTxVfo->CHANNEL_SAVE, gTxVfo, true, false, true);
-            gVfoConfigureMode = VFO_CONFIGURE;
-            gFlagResetVfos    = true;
-            return;
-
         case MENU_S_ADD2:
-            gTxVfo->SCANLIST2_PARTICIPATION = gSubMenuSelection;
-            SETTINGS_UpdateChannel(gTxVfo->CHANNEL_SAVE, gTxVfo, true, false, true);
-            gVfoConfigureMode = VFO_CONFIGURE;
-            gFlagResetVfos    = true;
-            return;
-
         case MENU_S_ADD3:
-            gTxVfo->SCANLIST3_PARTICIPATION = gSubMenuSelection;
+            if (UI_MENU_GetCurrentMenuId() == MENU_S_ADD1) gTxVfo->SCANLIST1_PARTICIPATION = gSubMenuSelection;
+            else if (UI_MENU_GetCurrentMenuId() == MENU_S_ADD2) gTxVfo->SCANLIST2_PARTICIPATION = gSubMenuSelection;
+            else gTxVfo->SCANLIST3_PARTICIPATION = gSubMenuSelection;
             SETTINGS_UpdateChannel(gTxVfo->CHANNEL_SAVE, gTxVfo, true, false, true);
             gVfoConfigureMode = VFO_CONFIGURE;
             gFlagResetVfos    = true;
@@ -1008,15 +998,11 @@ void MENU_ShowCurrentSetting(void)
             break;
 
         case MENU_S_ADD1:
-            gSubMenuSelection = gTxVfo->SCANLIST1_PARTICIPATION;
-            break;
-
         case MENU_S_ADD2:
-            gSubMenuSelection = gTxVfo->SCANLIST2_PARTICIPATION;
-            break;
-
         case MENU_S_ADD3:
-            gSubMenuSelection = gTxVfo->SCANLIST3_PARTICIPATION;
+            gSubMenuSelection = (UI_MENU_GetCurrentMenuId() == MENU_S_ADD1) ? gTxVfo->SCANLIST1_PARTICIPATION :
+                                (UI_MENU_GetCurrentMenuId() == MENU_S_ADD2) ? gTxVfo->SCANLIST2_PARTICIPATION :
+                                gTxVfo->SCANLIST3_PARTICIPATION;
             break;
 
         case MENU_STE:
@@ -1774,16 +1760,10 @@ static void MENU_Key_UP_DOWN(bool bKeyPressed, bool bKeyHeld, int8_t Direction)
             break;
 
         case MENU_SLIST3:
-            bCheckScanList = true;
-            VFO = 3;
-            break;
         case MENU_SLIST2:
-            bCheckScanList = true;
-            VFO = 2;
-            break;
         case MENU_SLIST1:
             bCheckScanList = true;
-            VFO = 1;
+            VFO = UI_MENU_GetCurrentMenuId() - MENU_SLIST1 + 1;
             break;
 
         default:

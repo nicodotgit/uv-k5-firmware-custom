@@ -78,29 +78,6 @@ void CHFRSCANNER_Start(const bool storeBackupSettings, const int8_t scan_directi
     gScanPauseMode         = false;
 }
 
-/*
-void CHFRSCANNER_ContinueScanning(void)
-{
-    if (IS_FREQ_CHANNEL(gNextMrChannel))
-    {
-        if (gCurrentFunction == FUNCTION_INCOMING)
-            APP_StartListening(gMonitor ? FUNCTION_MONITOR : FUNCTION_RECEIVE);
-        else
-            NextFreqChannel();  // switch to next frequency
-    }
-    else
-    {
-        if (gCurrentCodeType == CODE_TYPE_OFF && gCurrentFunction == FUNCTION_INCOMING)
-            APP_StartListening(gMonitor ? FUNCTION_MONITOR : FUNCTION_RECEIVE);
-        else
-            NextMemChannel();    // switch to next channel
-    }
-    
-    gScanPauseMode      = false;
-    gRxReceptionMode    = RX_MODE_NONE;
-    gScheduleScanListen = false;
-}
-*/
 
 void CHFRSCANNER_ContinueScanning(void)
 {
@@ -133,42 +110,7 @@ void CHFRSCANNER_Found(void)
     // gScheduleScanListen is always false...
     gScheduleScanListen = false;
 
-    /*
-    if(gEeprom.SCAN_RESUME_MODE > 1 && gEeprom.SCAN_RESUME_MODE < 26)
-    {
-        if (!gScanPauseMode)
-        {
-            gScanPauseDelayIn_10ms = scan_pause_delay_in_5_10ms * (gEeprom.SCAN_RESUME_MODE - 1) * 5;
-            gScheduleScanListen    = false;
-            gScanPauseMode         = true;
-        }
-    }
-    else
-    {
-        gScanPauseDelayIn_10ms = 0;
-        gScheduleScanListen    = false;
-    }
-    */
 
-    /*
-    switch (gEeprom.SCAN_RESUME_MODE)
-    {
-        case SCAN_RESUME_TO:
-            if (!gScanPauseMode)
-            {
-                gScanPauseDelayIn_10ms = scan_pause_delay_in_1_10ms;
-                gScheduleScanListen    = false;
-                gScanPauseMode         = true;
-            }
-            break;
-
-        case SCAN_RESUME_CO:
-        case SCAN_RESUME_SE:
-            gScanPauseDelayIn_10ms = 0;
-            gScheduleScanListen    = false;
-            break;
-    }
-    */
 
 #ifdef ENABLE_FEAT_F4HWN
     lastFoundFrqOrChanOld = lastFoundFrqOrChan;

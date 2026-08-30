@@ -233,6 +233,19 @@ void DTMF_Append(const char code)
 }
 
 #ifdef ENABLE_DTMF_CALLING
+static bool DTMF_MatchPattern(const char *prefix, const char *suffix, unsigned int *outOffset, bool bCheckGroup)
+{
+    char buf[21];
+    char sep[2] = {gEeprom.DTMF_SEPARATE_CODE, 0};
+    strcpy(buf, prefix);
+    if (sep[0]) strcat(buf, sep);
+    if (suffix) strcat(buf, suffix);
+    unsigned int len = strlen(buf);
+    if (gDTMF_RX_index < len) return false;
+    *outOffset = gDTMF_RX_index - len;
+    return CompareMessage(gDTMF_RX + *outOffset, buf, len, bCheckGroup);
+}
+
 void DTMF_HandleRequest(void)
 {   // proccess the RX'ed DTMF characters
 
@@ -256,76 +269,54 @@ void DTMF_HandleRequest(void)
 
     gDTMF_RX_pending = false;
 
-    if (gDTMF_RX_index >= 9)
+    if (DTMF_MatchPattern(gEeprom.ANI_DTMF_ID, gEeprom.KILL_CODE, &Offset, true))
     {   // look for the KILL code
 
-        char sep[2] = {gEeprom.DTMF_SEPARATE_CODE, 0};
-        strcpy(String, gEeprom.ANI_DTMF_ID);
-        strcat(String, sep);
-        strcat(String, gEeprom.KILL_CODE);
-
-        Offset = gDTMF_RX_index - strlen(String);
-
-        if (CompareMessage(gDTMF_RX + Offset, String, strlen(String), true))
-        {   // bugger
-
-            if (gEeprom.PERMIT_REMOTE_KILL)
-            {
-                gSetting_KILLED = true;      // oooerr !
-
-                DTMF_clear_RX();
-
-                SETTINGS_SaveSettings();
-
-                gDTMF_ReplyState = DTMF_REPLY_AB;
-
-                #ifdef ENABLE_FMRADIO
-                    if (gFmRadioMode)
-                    {
-                        FM_TurnOff();
-                        GUI_SelectNextDisplay(DISPLAY_MAIN);
-                    }
-                #endif
-            }
-            else
-            {
-                gDTMF_ReplyState = DTMF_REPLY_NONE;
-            }
-
-            gDTMF_CallState = DTMF_CALL_STATE_NONE;
-
-            gUpdateDisplay  = true;
-            gUpdateStatus   = true;
-            return;
-        }
-    }
-
-    if (gDTMF_RX_index >= 9)
-    {   // look for the REVIVE code
-
-        char sep[2] = {gEeprom.DTMF_SEPARATE_CODE, 0};
-        strcpy(String, gEeprom.ANI_DTMF_ID);
-        strcat(String, sep);
-        strcat(String, gEeprom.REVIVE_CODE);
-
-        Offset = gDTMF_RX_index - strlen(String);
-
-        if (CompareMessage(gDTMF_RX + Offset, String, strlen(String), true))
-        {   // shit, we're back !
-
-            gSetting_KILLED  = false;
+        if (gEeprom.PERMIT_REMOTE_KILL)
+        {
+            gSetting_KILLED = true;      // oooerr !
 
             DTMF_clear_RX();
 
             SETTINGS_SaveSettings();
 
             gDTMF_ReplyState = DTMF_REPLY_AB;
-            gDTMF_CallState  = DTMF_CALL_STATE_NONE;
 
-            gUpdateDisplay   = true;
-            gUpdateStatus    = true;
-            return;
+            #ifdef ENABLE_FMRADIO
+                if (gFmRadioMode)
+                {
+                    FM_TurnOff();
+                    GUI_SelectNextDisplay(DISPLAY_MAIN);
+                }
+            #endif
         }
+        else
+        {
+            gDTMF_ReplyState = DTMF_REPLY_NONE;
+        }
+
+        gDTMF_CallState = DTMF_CALL_STATE_NONE;
+
+        gUpdateDisplay  = true;
+        gUpdateStatus   = true;
+        return;
+    }
+
+    if (DTMF_MatchPattern(gEeprom.ANI_DTMF_ID, gEeprom.REVIVE_CODE, &Offset, true))
+    {   // look for the REVIVE code
+
+        gSetting_KILLED  = false;
+
+        DTMF_clear_RX();
+
+        SETTINGS_SaveSettings();
+
+        gDTMF_ReplyState = DTMF_REPLY_AB;
+        gDTMF_CallState  = DTMF_CALL_STATE_NONE;
+
+        gUpdateDisplay   = true;
+        gUpdateStatus    = true;
+        return;
     }
 
     if (gDTMF_RX_index >= 2)
@@ -350,18 +341,10 @@ void DTMF_HandleRequest(void)
     }
 
     if (gDTMF_CallState == DTMF_CALL_STATE_CALL_OUT &&
-        gDTMF_CallMode  == DTMF_CALL_MODE_NOT_GROUP &&
-        gDTMF_RX_index >= 9)
+        gDTMF_CallMode  == DTMF_CALL_MODE_NOT_GROUP)
     {   // waiting for a reply
 
-        char sep[2] = {gEeprom.DTMF_SEPARATE_CODE, 0};
-        strcpy(String, gDTMF_String);
-        strcat(String, sep);
-        strcat(String, "AAAAA");
-
-        Offset = gDTMF_RX_index - strlen(String);
-
-        if (CompareMessage(gDTMF_RX + Offset, String, strlen(String), false))
+        if (DTMF_MatchPattern(gDTMF_String, "AAAAA", &Offset, false))
         {   // we got a response
             gDTMF_State    = DTMF_STATE_CALL_OUT_RSP;
             DTMF_clear_RX();
@@ -374,51 +357,53 @@ void DTMF_HandleRequest(void)
         return;
     }
 
-    if (gDTMF_RX_index >= 7)
     {   // see if we're being called
 
         gDTMF_IsGroupCall = false;
 
+        char buf[21];
         char sep[2] = {gEeprom.DTMF_SEPARATE_CODE, 0};
-        strcpy(String, gEeprom.ANI_DTMF_ID);
-        strcat(String, sep);
+        strcpy(buf, gEeprom.ANI_DTMF_ID);
+        if (sep[0]) strcat(buf, sep);
+        unsigned int len = strlen(buf);
 
-        Offset = gDTMF_RX_index - strlen(String) - 3;
+        if (gDTMF_RX_index >= (len + 3)) {
+            Offset = gDTMF_RX_index - len - 3;
+            if (CompareMessage(gDTMF_RX + Offset, buf, len, true))
+            {   // it's for us !
 
-        if (CompareMessage(gDTMF_RX + Offset, String, strlen(String), true))
-        {   // it's for us !
+                gDTMF_CallState = DTMF_CALL_STATE_RECEIVED;
 
-            gDTMF_CallState = DTMF_CALL_STATE_RECEIVED;
+                memset(gDTMF_Callee, 0, sizeof(gDTMF_Callee));
+                memset(gDTMF_Caller, 0, sizeof(gDTMF_Caller));
+                memcpy(gDTMF_Callee, gDTMF_RX + Offset + 0, 3);
+                memcpy(gDTMF_Caller, gDTMF_RX + Offset + 4, 3);
 
-            memset(gDTMF_Callee, 0, sizeof(gDTMF_Callee));
-            memset(gDTMF_Caller, 0, sizeof(gDTMF_Caller));
-            memcpy(gDTMF_Callee, gDTMF_RX + Offset + 0, 3);
-            memcpy(gDTMF_Caller, gDTMF_RX + Offset + 4, 3);
+                DTMF_clear_RX();
 
-            DTMF_clear_RX();
+                gUpdateDisplay = true;
 
-            gUpdateDisplay = true;
+                switch (gEeprom.DTMF_DECODE_RESPONSE)
+                {
+                    case DTMF_DEC_RESPONSE_BOTH:
+                        gDTMF_DecodeRingCountdown_500ms = DTMF_decode_ring_countdown_500ms;
+                        [[fallthrough]];
+                    case DTMF_DEC_RESPONSE_REPLY:
+                        gDTMF_ReplyState = DTMF_REPLY_AAAAA;
+                        break;
+                    case DTMF_DEC_RESPONSE_RING:
+                        gDTMF_DecodeRingCountdown_500ms = DTMF_decode_ring_countdown_500ms;
+                        break;
+                    default:
+                    case DTMF_DEC_RESPONSE_NONE:
+                        gDTMF_DecodeRingCountdown_500ms = 0;
+                        gDTMF_ReplyState = DTMF_REPLY_NONE;
+                        break;
+                }
 
-            switch (gEeprom.DTMF_DECODE_RESPONSE)
-            {
-                case DTMF_DEC_RESPONSE_BOTH:
-                    gDTMF_DecodeRingCountdown_500ms = DTMF_decode_ring_countdown_500ms;
-                    [[fallthrough]];
-                case DTMF_DEC_RESPONSE_REPLY:
-                    gDTMF_ReplyState = DTMF_REPLY_AAAAA;
-                    break;
-                case DTMF_DEC_RESPONSE_RING:
-                    gDTMF_DecodeRingCountdown_500ms = DTMF_decode_ring_countdown_500ms;
-                    break;
-                default:
-                case DTMF_DEC_RESPONSE_NONE:
-                    gDTMF_DecodeRingCountdown_500ms = 0;
+                if (gDTMF_IsGroupCall)
                     gDTMF_ReplyState = DTMF_REPLY_NONE;
-                    break;
             }
-
-            if (gDTMF_IsGroupCall)
-                gDTMF_ReplyState = DTMF_REPLY_NONE;
         }
     }
 }

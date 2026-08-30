@@ -710,12 +710,10 @@ void SETTINGS_SaveSettings(void)
         tmp = tmp | (1 << 2);
 
     State[1] = tmp;
-    State[2] = gEeprom.SCANLIST_PRIORITY_CH1[0];
-    State[3] = gEeprom.SCANLIST_PRIORITY_CH2[0];
-    State[4] = gEeprom.SCANLIST_PRIORITY_CH1[1];
-    State[5] = gEeprom.SCANLIST_PRIORITY_CH2[1];
-    State[6] = gEeprom.SCANLIST_PRIORITY_CH1[2];
-    State[7] = gEeprom.SCANLIST_PRIORITY_CH2[2];
+    for (int i = 0; i < 3; i++) {
+        State[2 + i*2] = gEeprom.SCANLIST_PRIORITY_CH1[i];
+        State[3 + i*2] = gEeprom.SCANLIST_PRIORITY_CH2[i];
+    }
     EEPROM_WriteBuffer(0x0F18, State);
 
     memset(State, 0xFF, sizeof(State));
