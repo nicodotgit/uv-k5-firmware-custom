@@ -127,6 +127,10 @@
 #       fixed bug with F Lock plans on VFO
 #       renamed "nicodotgit" build to "Pro"
 
+#4.5:
+# - Added SRAM hardware caching and multiple performance optimizations
+# - Prevented Aircopy EEPROM calibration overwrite
+
 import webbrowser
 import os
 
@@ -153,7 +157,7 @@ DEBUG_SHOW_OBFUSCATED_COMMANDS = False
 DEBUG_SHOW_MEMORY_ACTIONS = False
 
 # TODO: remove the driver version when it's in mainline chirp 
-DRIVER_VERSION = "Quansheng UV-K5/K6/5R driver ver: 2026/08/26 (c) EGZUMER + F4HWN (Fork) v4.4.2"
+DRIVER_VERSION = "Quansheng UV-K5/K6/5R driver ver: 2026/08/30 (c) EGZUMER + F4HWN (Fork) v4.5"
 FIRMWARE_VERSION_UPDATE = "https://github.com/nicogotgit/uv-k5-firmware-custom/releases"
 
 CHIRP_DRIVER_VERSION_UPDATE = "https://github.com/nicodotgit/uv-k5-firmware-custom/releases"
