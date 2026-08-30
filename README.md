@@ -53,12 +53,11 @@ Several firmware versions are available, each tailored to a specific use case be
 
 ## Custom changes on this fork
 
-* **Repository Cleanup:** Removed unneeded precompiled archives and images, and pruned unused GitHub actions workflows.
-* **Memory & Performance Optimizations:** Replaced the external `printf` library with a minimalist custom formatter to aggressively save flash space. Converted primitives to `#define` macros, replaced `MENU_GetLimits` with a packed static look-up table, abbreviated labels, and conditionally stripped unused fonts and menu strings.
-* **Firmware & Security Fixes:** Enforced TX lock across global frequencies to prevent F-Lock bypass vulnerabilities. Added bounds checking on the FSK buffer, corrected 108MHz bounds checks, and resolved compander display bugs on disabled scanlist channels.
+* **Memory & Performance Optimizations:** Replaced the external `printf` library with a minimalist custom formatter to aggressively save flash space. Converted primitives to `#define` macros, replaced `MENU_GetLimits` with a packed static look-up table, abbreviated labels (e.g., "TX LOCK"), conditionally stripped unused fonts and menu strings, and deduplicated large switch blocks. Implemented SRAM caching for BK4819 SPI control registers (VOX, AGC) to dramatically speed up TX/RX transitions, and optimized the `init.c` multiple-load boot sequence.
+* **Firmware & Security Fixes:** Enforced TX lock across global frequencies to prevent F-Lock bypass vulnerabilities. Added bounds checking on the FSK buffer, corrected 108MHz bounds checks, resolved compander display bugs, and fixed an LCD `DrawLine` screen-clearing bug. Implemented a critical fix to prevent Aircopy from overwriting and corrupting the EEPROM calibration sector, corrected TX output power interpolation math for safe scaling, and replaced the broken TOT loop counter with a rock-solid deterministic SysTick timer.
 * **UI & Display Enhancements:** Added animated charging text, optimized display refresh logic, and added a perfectly centered small font fallback for FM radio and AirCopy. Tweaked ST7565 inverse display command and renamed menu entries.
 * **Custom Build (`Pro` edition):** Added a streamlined build target that enables Spectrum Analyzer, FM Radio, custom menu layout, K5 Viewer, and AM fix, but strictly removes Vox, Aircopy, NOAA, Rescue Ops, Games, PMR/GMRS, Alarms, and DTMF Calling to fit the 60KB limit.
-* **Code Quality & Build System:** Removed extensive dead code and commented-out blocks. Optimized compiler flags, improved the linker script, and updated the CHIRP driver to fit as an internal custom module.
+* **Code Quality & Build System:** Removed extensive dead code and commented-out blocks. Discarded unused `.eh_frame`/`.fini` linker sections, ensured cross-context interrupt safety with `volatile` declarations, and updated the CHIRP driver to fit as an internal custom module. Improved the build scripts to use multi-core parallel compilation with real-time linker memory profiling.
 
 ## Main features and improvements from F4HWN:
 
