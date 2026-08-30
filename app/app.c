@@ -75,6 +75,8 @@
 #include "ui/status.h"
 #include "ui/ui.h"
 
+extern volatile uint32_t gGlobalSysTickCounter;
+
 #ifdef ENABLE_FEAT_F4HWN_SCREENSHOT
     #include "screenshot.h"
 #endif
@@ -846,43 +848,35 @@ void APP_Update(void)
 #endif
 
 #ifdef ENABLE_FEAT_F4HWN
-    if (gCurrentFunction == FUNCTION_TRANSMIT && (gTxTimeoutReachedAlert || SerialConfigInProgress()))
+    bool alertActive = (gTxTimerCountdown_500ms > 0 && gTxTimerCountdown_500ms <= 20);
+
+    if (gCurrentFunction == FUNCTION_TRANSMIT && (alertActive || SerialConfigInProgress()))
     {
         if(gSetting_set_tot >= 2)
         {
             if (gEeprom.BACKLIGHT_TIME == 0) {
-                if (gBlinkCounter == 0 || gBlinkCounter == 250)
-                {
-                    GPIO_FlipBit(&GPIOC->DATA, GPIOC_PIN_FLASHLIGHT);
+                if (gTxTimerCountdown_500ms % 2 == 0) {
+                    GPIO_SetBit(&GPIOC->DATA, GPIOC_PIN_FLASHLIGHT);
+                } else {
+                    GPIO_ClearBit(&GPIOC->DATA, GPIOC_PIN_FLASHLIGHT);
                 }
             }
             else
             {
-                if (gBlinkCounter == 0)
-                {
-                    //BACKLIGHT_TurnOn();
+                if (gTxTimerCountdown_500ms % 2 == 0) {
                     BACKLIGHT_SetBrightness(gEeprom.BACKLIGHT_MAX);
-                }
-                else if(gBlinkCounter == 15000)
-                {
-                    //BACKLIGHT_TurnOff();
+                } else {
                     BACKLIGHT_SetBrightness(gEeprom.BACKLIGHT_MIN);
                 }
             }
         }
 
-        gBlinkCounter++;
-
-        if(
-            (gSetting_set_tot == 3 && gEeprom.BACKLIGHT_TIME != 0 && gBlinkCounter > 74000) || 
-            (gSetting_set_tot == 3 && gEeprom.BACKLIGHT_TIME == 0 && gBlinkCounter > 79000) || 
-            (gSetting_set_tot != 3 && gBlinkCounter > 76000)
-            ) // try to calibrate 10 times
+        if(gSetting_set_tot == 1 || gSetting_set_tot == 3)
         {
-            gBlinkCounter = 0;
-
-            if(gSetting_set_tot == 1 || gSetting_set_tot == 3)
+            static uint16_t lastToneTick = 0;
+            if (gTxTimerCountdown_500ms != lastToneTick && (gTxTimerCountdown_500ms % 2 == 0)) 
             {
+                lastToneTick = gTxTimerCountdown_500ms;
                 BK4819_DisableScramble();
                 BK4819_PlaySingleTone(gTxTimeoutToneAlert, 30, 1, true);
                 gTxTimeoutToneAlert += 100;
@@ -902,7 +896,7 @@ void APP_Update(void)
             BACKLIGHT_SetBrightness(gEeprom.BACKLIGHT_MAX);
         }
 
-        gTxTimeoutReachedAlert = false;
+
         gTxTimeoutToneAlert = 800;
 
         if (gSetting_set_ptt_session) // Improve OnePush if TOT

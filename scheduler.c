@@ -42,7 +42,7 @@
                 flag = true;             \
     } while (0)
 
-static volatile uint32_t gGlobalSysTickCounter;
+volatile uint32_t gGlobalSysTickCounter;
 
 void SystickHandler(void);
 
@@ -57,7 +57,6 @@ void SystickHandler(void)
         gNextTimeslice_500ms = true;
 
 #ifdef ENABLE_FEAT_F4HWN
-        DECREMENT_AND_TRIGGER(gTxTimerCountdownAlert_500ms - ALERT_TOT * 2, gTxTimeoutReachedAlert);
         #ifdef ENABLE_FEAT_F4HWN_RX_TX_TIMER
             DECREMENT(gRxTimerCountdown_500ms);
         #endif

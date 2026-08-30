@@ -1095,15 +1095,13 @@ void RADIO_PrepareTX(void)
         */
 
 #ifdef ENABLE_FEAT_F4HWN 
-        gTxTimerCountdownAlert_500ms = gTxTimerCountdown_500ms;
+        gTxTimeoutToneAlert = 800;
 #endif
     }
 
     gTxTimeoutReached    = false;
 
-#ifdef ENABLE_FEAT_F4HWN 
-    gTxTimeoutReachedAlert = false;
-#endif
+
     
     gFlagEndTransmission = false;
     gRTTECountdown_10ms  = 0;

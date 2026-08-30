@@ -121,8 +121,7 @@ volatile uint16_t gTxTimerCountdown_500ms;
 volatile bool     gTxTimeoutReached;
 
 #ifdef ENABLE_FEAT_F4HWN
-    volatile uint16_t gTxTimerCountdownAlert_500ms;
-    volatile bool     gTxTimeoutReachedAlert;
+
     volatile uint16_t gTxTimeoutToneAlert = 800;
     #ifdef ENABLE_FEAT_F4HWN_RX_TX_TIMER
         volatile uint16_t gRxTimerCountdown_500ms;
