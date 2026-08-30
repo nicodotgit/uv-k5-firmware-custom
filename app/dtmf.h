@@ -76,7 +76,7 @@ extern bool              gDTMF_InputMode;
 extern uint8_t           gDTMF_PreviousIndex;
 
 extern char              gDTMF_RX_live[20];
-extern uint8_t           gDTMF_RX_live_timeout;
+extern volatile uint8_t  gDTMF_RX_live_timeout;
 
 extern DTMF_ReplyState_t gDTMF_ReplyState;
 

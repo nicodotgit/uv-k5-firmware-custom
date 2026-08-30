@@ -33,7 +33,7 @@ enum FUNCTION_Type_t
 
 typedef enum FUNCTION_Type_t FUNCTION_Type_t;
 
-extern FUNCTION_Type_t       gCurrentFunction;
+extern volatile FUNCTION_Type_t gCurrentFunction;
 
 void FUNCTION_Init(void);
 void FUNCTION_Select(FUNCTION_Type_t Function);

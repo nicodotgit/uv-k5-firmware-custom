@@ -40,7 +40,7 @@
 #include "ui/status.h"
 #include "ui/ui.h"
 
-FUNCTION_Type_t gCurrentFunction;
+volatile FUNCTION_Type_t gCurrentFunction;
 
 bool FUNCTION_IsRx()
 {
