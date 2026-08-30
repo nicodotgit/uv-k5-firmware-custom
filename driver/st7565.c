@@ -32,7 +32,8 @@ static void DrawLine(uint8_t column, uint8_t line, const uint8_t * lineBuffer, u
 {   
     ST7565_SelectColumnAndLine(column + 4, line);
     GPIO_SetBit(&GPIOB->DATA, GPIOB_PIN_ST7565_A0);
-    for (unsigned i = 0; i < size_defVal; i++) {
+    unsigned size = lineBuffer ? size_defVal : LCD_WIDTH;
+    for (unsigned i = 0; i < size; i++) {
         while ((SPI0->FIFOST & SPI_FIFOST_TFF_MASK) != SPI_FIFOST_TFF_BITS_NOT_FULL) {}
         SPI0->WDR = lineBuffer ? lineBuffer[i] : size_defVal;
     }
@@ -180,7 +181,7 @@ enum {
     ST7565_CMD_DISPLAY_ON_OFF = 0xAE
 };
 
-uint8_t cmds[] = {
+static const uint8_t cmds[] = {
     ST7565_CMD_BIAS_SELECT | 0,             // Select bias setting: 1/9
     ST7565_CMD_COM_DIRECTION  | (0 << 3),   // Set output direction of COM: normal
     ST7565_CMD_SEG_DIRECTION | 1,           // Set scan direction of SEG: reverse
