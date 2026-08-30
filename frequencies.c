@@ -134,13 +134,10 @@ uint8_t FREQUENCY_CalculateOutputPower(uint8_t TxpLow, uint8_t TxpMid, uint8_t T
 
     if (Frequency <= Middle)
     {
-        TxpMid += ((TxpMid - TxpLow) * (Frequency - LowerLimit)) / (Middle - LowerLimit);
-        return TxpMid;
+        return TxpLow + ((TxpMid - TxpLow) * (Frequency - LowerLimit)) / (Middle - LowerLimit);
     }
 
-    TxpMid += ((TxpHigh - TxpMid) * (Frequency - Middle)) / (UpperLimit - Middle);
-
-    return TxpMid;
+    return TxpMid + ((TxpHigh - TxpMid) * (Frequency - Middle)) / (UpperLimit - Middle);
 }
 
 
