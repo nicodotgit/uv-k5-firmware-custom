@@ -16,7 +16,7 @@ clean() {
 custom() {
     echo "🔧 Compiling Custom..."
     make clean
-    make -s \
+    make -s -j$(nproc) \
         EDITION_STRING=Custom \
         TARGET=f4hwn.custom
     cp f4hwn.custom* "$FIRMWARE_DIR"/
@@ -25,7 +25,7 @@ custom() {
 standard() {
     echo "📦 Compiling Standard..."
     make clean
-    make -s \
+    make -s -j$(nproc) \
         ENABLE_SPECTRUM=0 \
         ENABLE_FMRADIO=0 \
         ENABLE_AIRCOPY=0 \
@@ -38,7 +38,7 @@ standard() {
 bandscope() {
     echo "📺 Compiling Bandscope..."
     make clean
-    make -s \
+    make -s -j$(nproc) \
         ENABLE_SPECTRUM=1 \
         ENABLE_FMRADIO=0 \
         ENABLE_VOX=0 \
@@ -57,7 +57,7 @@ bandscope() {
 broadcast() {
     echo "📻 Compiling Broadcast..."
     make clean
-    make -s \
+    make -s -j$(nproc) \
         ENABLE_SPECTRUM=0 \
         ENABLE_FMRADIO=1 \
         ENABLE_VOX=1 \
@@ -76,7 +76,7 @@ broadcast() {
 basic() {
     echo "☘️ Compiling Basic..."
     make clean
-    make -s \
+    make -s -j$(nproc) \
         ENABLE_SPECTRUM=1 \
         ENABLE_FMRADIO=1 \
         ENABLE_VOX=0 \
@@ -101,7 +101,7 @@ basic() {
 rescueops() {
     echo "🚨 Compiling RescueOps..."
     make clean
-    make -s \
+    make -s -j$(nproc) \
         ENABLE_SPECTRUM=0 \
         ENABLE_FMRADIO=0 \
         ENABLE_VOX=1 \
@@ -120,7 +120,7 @@ rescueops() {
 game() {
     echo "🎮 Compiling Game..."
     make clean
-    make -s \
+    make -s -j$(nproc) \
         ENABLE_SPECTRUM=0 \
         ENABLE_FMRADIO=1 \
         ENABLE_VOX=0 \
@@ -138,7 +138,7 @@ game() {
 pro() {
     echo "🧰 Compiling Pro..."
     make clean
-    make -s \
+    make -s -j$(nproc) \
         ENABLE_SPECTRUM=1 \
         ENABLE_FMRADIO=1 \
         ENABLE_VOX=0 \
