@@ -127,7 +127,7 @@ void AIRCOPY_StorePacket(void)
 
     uint16_t Offset = g_FSK_Buffer[1];
 
-    if (Offset >= 0x1E00) {
+    if (Offset > 0x1DC0) {
         gErrorsDuringAirCopy++;
         return;
     }
