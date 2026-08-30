@@ -249,7 +249,7 @@ static bool DTMF_MatchPattern(const char *prefix, const char *suffix, unsigned i
 void DTMF_HandleRequest(void)
 {   // proccess the RX'ed DTMF characters
 
-    char         String[21];
+
     unsigned int Offset;
 
     if (!gDTMF_RX_pending)
