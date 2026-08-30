@@ -485,7 +485,7 @@ const uint8_t gFontSmall[95-1][6] =
     };
 #endif
 
-//#ifdef ENABLE_SPECTRUM
+#if defined(ENABLE_FEAT_F4HWN) || defined(ENABLE_SPECTRUM)
     const uint8_t gFont3x5[][3] =
     {
         {0x00, 0x00, 0x00}, //  32 - space
@@ -653,4 +653,4 @@ const uint8_t gFontSmall[95-1][6] =
         // {0x03, 0x0b, 0x18}, // 190 - threequarters
         // {0x18, 0x15, 0x10}, // 191 - questiondown
     };
-//#endif
+#endif
