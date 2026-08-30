@@ -40,6 +40,32 @@ static const uint16_t FSK_RogerTable[7] = {0xF1A2, 0x7446, 0x61A4, 0x6544, 0x4E8
 
 static uint16_t gBK4819_GpioOutState;
 
+static uint16_t gBK4819_Reg31_cache;
+static uint16_t gBK4819_Reg7E_cache;
+
+static inline uint16_t BK4819_ReadRegister31(void)
+{
+    return gBK4819_Reg31_cache;
+}
+
+static inline void BK4819_WriteRegister31(uint16_t val)
+{
+    gBK4819_Reg31_cache = val;
+    BK4819_WriteRegister(0x31, val);
+}
+
+static inline uint16_t BK4819_ReadRegister7E(void)
+{
+    return gBK4819_Reg7E_cache;
+}
+
+static inline void BK4819_WriteRegister7E(uint16_t val)
+{
+    gBK4819_Reg7E_cache = val;
+    BK4819_WriteRegister(0x7E, val);
+}
+
+
 bool gRxIdleMode;
 
 __inline uint16_t scale_freq(const uint16_t freq)
@@ -56,6 +82,9 @@ void BK4819_Init(void)
 
     BK4819_WriteRegister(BK4819_REG_00, 0x8000);
     BK4819_WriteRegister(BK4819_REG_00, 0x0000);
+
+    gBK4819_Reg31_cache = BK4819_ReadRegister(0x31);
+    gBK4819_Reg7E_cache = BK4819_ReadRegister(0x7E);
 
     BK4819_WriteRegister(BK4819_REG_37, 0x1D0F);
     BK4819_WriteRegister(BK4819_REG_36, 0x0022);
@@ -242,11 +271,11 @@ void BK4819_WriteU16(uint16_t Data)
 
 void BK4819_SetAGC(bool enable)
 {
-    uint16_t regVal = BK4819_ReadRegister(BK4819_REG_7E);
+    uint16_t regVal = BK4819_ReadRegister7E();
     if(!(regVal & (1 << 15)) == enable)
         return;
 
-    BK4819_WriteRegister(BK4819_REG_7E, (regVal & ~(1 << 15) & ~(0b111 << 12))
+    BK4819_WriteRegister7E((regVal & ~(1 << 15) & ~(0b111 << 12))
         | (!enable << 15)   // 0  AGC fix mode
         | (3u << 12)       // 3  AGC fix index
     );
@@ -347,7 +376,7 @@ int8_t BK4819_GetRxGain_dB(void)
         uint16_t __raw;
     } reg7e;
 
-    reg7e.__raw = BK4819_ReadRegister(BK4819_REG_7E);
+    reg7e.__raw = BK4819_ReadRegister7E();
     uint8_t gainAddr = reg7e.gainIdx < 0 ? BK4819_REG_14 : BK4819_REG_10 + reg7e.gainIdx;
     agcGainReg.__raw = BK4819_ReadRegister(gainAddr);
     int8_t lnaShortTab[] = {-28, -24, -19, 0};
@@ -543,7 +572,7 @@ void BK4819_EnableVox(uint16_t VoxEnableThreshold, uint16_t VoxDisableThreshold)
     //else
     //if (voxamp<VoxDisableThreshold) (After Delay) VOX = 0;
 
-    const uint16_t REG_31_Value = BK4819_ReadRegister(BK4819_REG_31);
+    const uint16_t REG_31_Value = BK4819_ReadRegister31();
 
     // 0xA000 is undocumented?
     BK4819_WriteRegister(BK4819_REG_46, 0xA000 | (VoxEnableThreshold & 0x07FF));
@@ -555,7 +584,7 @@ void BK4819_EnableVox(uint16_t VoxEnableThreshold, uint16_t VoxDisableThreshold)
     BK4819_WriteRegister(BK4819_REG_7A, 0x289A); // vox disable delay = 128*5 = 640ms
 
     // Enable VOX
-    BK4819_WriteRegister(BK4819_REG_31, REG_31_Value | (1u << 2));    // VOX Enable
+    BK4819_WriteRegister31(REG_31_Value | (1u << 2));    // VOX Enable
 }
 
 void BK4819_SetFilterBandwidth(const BK4819_FilterBandwidth_t Bandwidth, const bool weak_no_different)
@@ -841,21 +870,21 @@ void BK4819_PickRXFilterPathBasedOnFrequency(uint32_t Frequency)
 
 void BK4819_DisableScramble(void)
 {
-    const uint16_t Value = BK4819_ReadRegister(BK4819_REG_31);
-    BK4819_WriteRegister(BK4819_REG_31, Value & ~(1u << 1));
+    const uint16_t Value = BK4819_ReadRegister31();
+    BK4819_WriteRegister31(Value & ~(1u << 1));
 }
 
 void BK4819_EnableScramble(uint8_t Type)
 {
-    const uint16_t Value = BK4819_ReadRegister(BK4819_REG_31);
-    BK4819_WriteRegister(BK4819_REG_31, Value | (1u << 1));
+    const uint16_t Value = BK4819_ReadRegister31();
+    BK4819_WriteRegister31(Value | (1u << 1));
 
     BK4819_WriteRegister(BK4819_REG_71, 0x68DC + (Type * 1032));   // 0110 1000 1101 1100
 }
 
 bool BK4819_CompanderEnabled(void)
 {
-    return (BK4819_ReadRegister(BK4819_REG_31) & (1u << 3)) ? true : false;
+    return (BK4819_ReadRegister31() & (1u << 3)) ? true : false;
 }
 
 void BK4819_SetCompander(const unsigned int mode)
@@ -865,11 +894,11 @@ void BK4819_SetCompander(const unsigned int mode)
     // mode 2 .. RX
     // mode 3 .. TX and RX
 
-    const uint16_t r31 = BK4819_ReadRegister(BK4819_REG_31);
+    const uint16_t r31 = BK4819_ReadRegister31();
 
     if (mode == 0)
     {   // disable
-        BK4819_WriteRegister(BK4819_REG_31, r31 & ~(1u << 3));
+        BK4819_WriteRegister31(r31 & ~(1u << 3));
         return;
     }
 
@@ -916,13 +945,13 @@ void BK4819_SetCompander(const unsigned int mode)
         (expand_noise_dB <<  0));
 
     // enable
-    BK4819_WriteRegister(BK4819_REG_31, r31 | (1u << 3));
+    BK4819_WriteRegister31(r31 | (1u << 3));
 }
 
 void BK4819_DisableVox(void)
 {
-    const uint16_t Value = BK4819_ReadRegister(BK4819_REG_31);
-    BK4819_WriteRegister(BK4819_REG_31, Value & 0xFFFB);
+    const uint16_t Value = BK4819_ReadRegister31();
+    BK4819_WriteRegister31(Value & 0xFFFB);
 }
 
 void BK4819_DisableDTMF(void)
@@ -1110,10 +1139,10 @@ void BK4819_ExitBypass(void)
     //         0 = bypass DC filter
     //
 
-    uint16_t regVal = BK4819_ReadRegister(BK4819_REG_7E);
+    uint16_t regVal = BK4819_ReadRegister7E();
 
     // 0x302E / 0 011 000000 101 110
-    BK4819_WriteRegister(BK4819_REG_7E, (regVal & ~(0b111 << 3))
+    BK4819_WriteRegister7E((regVal & ~(0b111 << 3))
 
         | (5u <<  3)       // 5  DC Filter band width for Tx (MIC In)
 
