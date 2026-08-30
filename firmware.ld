@@ -24,9 +24,7 @@ SECTIONS
 		*(.rodata*)        /* .rodata* sections       */
 		*(.glue_7)         /* Glue arm to thumb code  */
 		*(.glue_7t)        /* Glue thumb to arm code  */
-		*(.eh_frame)
 
-		KEEP(*(.fini))
 		. = ALIGN(4);
 		_etext = .;        /* global symbols at end   */
 	} >FLASH
@@ -70,6 +68,8 @@ SECTIONS
 	/DISCARD/ : {
 		*(.ARM.exidx*)
 		*(.ARM.extab*)
+		*(.eh_frame)
+		*(.fini)
 	}
 
 	/* Check that there is enough RAM */
